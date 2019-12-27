@@ -1,0 +1,90 @@
+{% extends "annotation/extend_ls.html" %}
+{% load staticfiles %}
+{% block title%}注册{% endblock %}
+
+{% block css%}
+    <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/bootstrap-theme.min.css' %}">
+	<style type="text/css">
+		.modal-header{padding: 0;}
+		/*.modal-content{border-radius: 0;}*/
+		.modal-dialog .close{position: absolute;top: 10px;right: 15px;}
+		.modal-dialog h3{font-size: 14px;height:42px;line-height: 42px;margin: 0;padding: 0 80px 0 20px;}
+		.modal-dialog label{font-weight: 400;}
+		.tips{line-height: 34px;font-size: 13px;}
+		.tips span{color: red;}
+		@media (min-width: 1080px){
+			/*模态框-距顶部距离*/
+			.modal-dialog {
+			    margin-top: 50px;
+			}
+			.col-sm-6{padding-left: 0;padding-right: 0;}
+
+		}
+	</style>
+{% endblock%}
+
+{% block content %}
+	<!--模态框-->
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form class="form-horizontal" autocomplete="off" method="POST">
+            {% csrf_token %}
+            <div class="modal-header">
+                <button class="close" data-dismiss="modal">x</button>
+                <h3></h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="name" class="col-sm-2 control-label">{{username}}用户名</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" required name="username" id="name" placeholder="6~16位字母、数字、下划线组合">
+                    </div>
+                    <div class="col-sm-4 tips"><span>* </span>必填</div>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control" id="password" required name="password" placeholder="6~16位字母、数字、下划线组合" >
+                    </div>
+                    <div class="col-sm-4 tips"><span>* </span>必填</div>
+                </div>
+                <div class="form-group">
+                    <label for="repeat_password" class="col-sm-2 control-label">重复密码</label>
+                    <div class="col-sm-6">
+                        <input type="password" class="form-control" id="repeat_password" required name="repeat_password" placeholder="6~16位字母、数字、下划线组合" >
+                    </div>
+                    <div class="col-sm-4 tips"><span>* </span>必填</div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">小组名称</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" name="group_name">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                    {% if status == 'repeat_error' %}
+                        <h4 class="text-warning text-center">密码重复错误</h4>
+                    {% elif status == 'empty' %}
+                        <h4 class="text-warning text-center">密码不能为空</h4>
+                    {% elif status == 'user_exist' %}
+                        <h4 class="text-danger text-center">用户已经存在</h4>
+                    {% endif %}
+                </div>
+                <button class="btn btn-primary" type="submit">保存</button>
+                <button class="btn btn-info" data-dismiss="modal" ><a href="{% url 'login' %}" style="A:link {text－decoration: none};">关闭</a></button>
+            </div>
+        </form>
+
+    </div>
+</div>
+{% endblock %}
