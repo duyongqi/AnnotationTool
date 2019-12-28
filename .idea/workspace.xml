@@ -1,8 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e902055-5195-410c-9b6a-00c2da348f24" name="Default Changelist" comment="" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <list default="true" id="2e902055-5195-410c-9b6a-00c2da348f24" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/AnnotationTool.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AnnotationTool.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnnotationTool/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/AnnotationTool/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AnnotationTool/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/AnnotationTool/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/static/annotation/css/base.css" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/static/annotation/css/base.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/choose_text.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/choose_text.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/extend_ls.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/extend_ls.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/extend_others.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/extend_others.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/final_decide.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/final_decide.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/logout.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/logout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/note.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/note.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/test.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/upload.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/annotation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,11 +38,21 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1VWGZIbhbcmVkgKHKuI4tpxup9h" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/annotation/static/annotationtry" />
-    <property name="settings.editor.selected.configurable" value="settings.github" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="D:/test_bootstrap" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -29,19 +61,28 @@
       <recent name="D:\AnnotationTool\annotation\static\annotation" />
     </key>
   </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
-  </component>
   <component name="RunManager">
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="AnnotationTool" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="admin" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="AnnotationTool" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -69,6 +110,18 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
   <component name="SvnConfiguration">
     <configuration>C:\Users\荒荒儿\AppData\Roaming\Subversion</configuration>
   </component>
@@ -84,5 +137,23 @@
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577516622606">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="96" y="0" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1280.680@0.0.1280.680" timestamp="1577516622606" />
+    <state x="381" y="150" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1577518613928">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="381" y="150" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1280.680@0.0.1280.680" timestamp="1577518613928" />
+    <state x="420" y="119" key="FileChooserDialogImpl" timestamp="1577531592243">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="420" y="119" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1577531592243" />
+    <state x="144" y="0" key="SettingsEditor" timestamp="1577518184049">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="144" y="0" key="SettingsEditor/0.0.1280.680@0.0.1280.680" timestamp="1577518184049" />
   </component>
 </project>

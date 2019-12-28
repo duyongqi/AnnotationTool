@@ -30,11 +30,13 @@ def login(request):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
         # 注意：这里不能用user.objects.get或者filter，因为密码加密，验证不了，得用authenticate
-        if authenticate(username=username, password=password):
+        user = auth.authenticate(username=username, password=password)
+        if user is not None:
+            auth.login(request, user)
             return HttpResponseRedirect(reverse('choose_text'))
         else:
             content ={
-                'message': '用户名或密码错误'
+                'message': '用户名或密码错误',
             }
             return render(request,'annotation/login.html', content)
     return render(request, 'annotation/login.html')
@@ -85,7 +87,14 @@ def register(request):
 
 # 用户以及用户组长文本选择（暂定为同一个界面）
 def choose_text(request):
-    return render(request, 'annotation/choose_text.html')
+    if request.user.is_authenticated:
+        user = request.user
+    else:
+        user = None
+    content = {
+        'user' : user,
+    }
+    return render(request, 'annotation/choose_text.html',content)
 
 
 # 用户标注界面
