@@ -26,6 +26,7 @@ def login(request):
     # 使用auth自带的验证函数
     # if request.user.is_authenticated:
     #     return HttpResponseRedirect(reverse('choose_text'))
+
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -34,7 +35,8 @@ def login(request):
             return HttpResponseRedirect(reverse('choose_text'))
         else:
             content ={
-                'message': '用户名或密码错误'
+                'message': '用户名或密码错误',
+
             }
             return render(request,'annotation/login.html', content)
     return render(request, 'annotation/login.html')
@@ -42,6 +44,7 @@ def login(request):
 
 # 注册
 def register(request):
+    group_list = group.objects.all()
     status = None
     # 状态变量初值
     if request.method == 'POST':
@@ -77,7 +80,8 @@ def register(request):
                 group_1.save()
                 return HttpResponseRedirect(reverse('login'))
     content = {
-        'status': status
+        'status': status,
+        'group_list' : group_list,
     }
     # 向html传递参数
     return render(request, 'annotation/register.html', content)

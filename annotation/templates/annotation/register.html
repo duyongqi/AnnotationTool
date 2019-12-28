@@ -1,5 +1,5 @@
 {% extends "annotation/extend_ls.html" %}
-{% load staticfiles %}
+{% load static %}
 {% block title%}注册{% endblock %}
 
 {% block css%}
@@ -60,11 +60,9 @@
                     <label class="col-sm-2 control-label">小组名称</label>
                     <div class="col-sm-6">
                         <select class="form-control" name="group_name">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
+                            {% for g in group_list %}
+                                <option value="{{g.group_name}}">{{g.group_name}}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
