@@ -13,8 +13,8 @@ from django.contrib.auth import authenticate
 
 # Create your views here.
 # 首页
-def homepage(request):
-    return render(request, 'annotation/homepage.html')
+# def homepage(request):
+#     return render(request, 'annotation/homepage.html')
 
 
 # 登录
@@ -26,6 +26,7 @@ def login(request):
     # 使用auth自带的验证函数
     # if request.user.is_authenticated:
     #     return HttpResponseRedirect(reverse('choose_text'))
+
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
