@@ -3,12 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="2e902055-5195-410c-9b6a-00c2da348f24" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/extend_ls.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/extend_ls.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/extend_others.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/extend_others.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/annotation/templates/annotation/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/templates/annotation/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/annotation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/annotation/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
