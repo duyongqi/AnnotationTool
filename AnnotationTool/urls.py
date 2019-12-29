@@ -20,5 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('annotation/', include('annotation.urls')),
     #增加验证码的路径尝试
-    path('captcha',include('captcha.urls'))
+    # path('captcha',include('captcha.urls'))
 ]
