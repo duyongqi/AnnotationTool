@@ -42,8 +42,8 @@ def login(request):
     return render(request, 'annotation/login.html')
 
 
-# 注册
 def register(request):
+    group_list = group.objects.all()
     status = None
     # 状态变量初值
     if request.method == 'POST':
@@ -79,7 +79,8 @@ def register(request):
                 group_1.save()
                 return HttpResponseRedirect(reverse('login'))
     content = {
-        'status': status
+        'status': status,
+        'group_list' : group_list,
     }
     # 向html传递参数
     return render(request, 'annotation/register.html', content)
