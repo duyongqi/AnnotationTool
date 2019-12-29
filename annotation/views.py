@@ -4,11 +4,11 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from .models import myUser, a_text, group
+from .models import myUser, a_text, group, text
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate
-
+from .form import UploadFile
 
 
 # Create your views here.
@@ -36,10 +36,10 @@ def login(request):
             auth.login(request, user)
             return HttpResponseRedirect(reverse('choose_text'))
         else:
-            content ={
+            content = {
                 'message': '用户名或密码错误',
             }
-            return render(request,'annotation/login.html', content)
+            return render(request, 'annotation/login.html', content)
     return render(request, 'annotation/login.html')
 
 
@@ -81,7 +81,7 @@ def register(request):
                 return HttpResponseRedirect(reverse('login'))
     content = {
         'status': status,
-        'group_list' : group_list,
+        'group_list': group_list,
     }
     # 向html传递参数
     return render(request, 'annotation/register.html', content)
@@ -94,9 +94,9 @@ def choose_text(request):
     else:
         user = None
     content = {
-        'user' : user,
+        'user': user,
     }
-    return render(request, 'annotation/choose_text.html',content)
+    return render(request, 'annotation/choose_text.html', content)
 
 
 # 用户标注界面
@@ -106,18 +106,39 @@ def note(request):
 
 # 组长上传界面
 def upload(request):
-    return render(request, 'annotation/upload.html')
+    if request.method == "POST":
+        # 获取上传的表单
+        form = UploadFile(request.FILES)
+        # 获取用户
+        user = request.user
+        # 获取文件
+        file = request.FILES['file_upload']
+        message = '上传成功'
+        if form.is_valid:
+            # group_name = user.myuser.group.group_name
+            # group_in = group.objects.get(group_name=group_name)
+            new_text = text(name=file.name, group=user.myuser.group, text=file)
+            # 注意这里的user.myuser.group,我发现request里面包括user，myuser就是存在数据库的那个
+            new_text.save()
+            form = UploadFile()
+            return render(request, 'annotation/upload.html', {'form': form, 'message': message})
+        else:
+            form = UploadFile()
+            message = '上传失败'
+            return render(request, 'annotation/upload.html', {'form': form, 'message': message})
+    form = UploadFile()
+    return render(request, 'annotation/upload.html', {'form': form})
 
 
 # 组长最终决定标注界面
 def final_decide(request):
     return render(request, 'annotation/final_decide.html')
 
+#
+# def logout(request):
+#     # 重定向到homepage
+#     return HttpResponse('重定向到主界面，还没实现')
 
-def logout(request):
-    # 重定向到homepage
-    return HttpResponse('重定向到主界面，还没实现')
-
-
-def set_password(request):
-    return HttpResponse('重置密码界面')
+#
+# def set_password(request):
+#     return HttpResponse('重置密码界面')

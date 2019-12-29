@@ -1,27 +1,47 @@
 {% extends "annotation/extend_others.html" %}
 {% load static %}
+{% block js %}
+{% endblock %}
 {% block content %}
-<!DOCTYPE html>
 <html lang="zh-CN">
-<head>
+  <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后 ！ -->
-    <title>读取本地txt</title>
-</head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- 上述meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <!-- Bootstrap CSS -->
+ <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/bootstrap-theme.min.css' %}">
+      <title>上传文档</title>
+  </head>
 <body>
-<div class="page-container">
-    <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-      <div>
-        <input type="file" style="width: 20%" name="myfile" id="filename">
-      </div>
-      <div>
-        <button class="btn btn-primary-outline radius size-S" type="submit" value="upload">提交</button>
-      </div>
-    </form>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form class="form-horizontal" autocomplete="off" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+            <div class="modal-header">
+              <button class="close" data-dismiss="modal">x</button>
+               <h3>文件上传</h3>
+            </div>
+<!--            <div class="form-group">-->
+            <div class="modal-group">
+                {{ form.file_upload }}
+                <pans >
+                    <button type="button" class="btn btn-primary" id="test3" οnclick="document.getElementById('file_upload').click()">选择</button>
+                </pans>
+<!--            </div>-->
+            </div>
+            <div class="modal-footer">
+                <div class="text-center">
+                <h5>{{message}}</h5>
+                </div>
+                <button class="btn btn-primary" type="submit">上传</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
-<ml>
 {% endblock %}
+    <!--      <div>-->
+<!--        <input type="file" style="width: 20%" name="myfile" id="filename">-->
+<!--      </div>-->

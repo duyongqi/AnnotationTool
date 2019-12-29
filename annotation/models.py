@@ -64,6 +64,9 @@ class text(models.Model):
     index = models.IntegerField(default=0)
     # 文本是否可以被普通用户标注
     limit = models.IntegerField(default=1)
+    # @property
+    # def __str__(self):
+    #     return self.name
 # class a_text(models.Model):
 #     '''标注后的xml的表'''
 # name = models.CharField(max_length=50)
