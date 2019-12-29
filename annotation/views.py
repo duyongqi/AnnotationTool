@@ -12,9 +12,7 @@ from django.contrib.auth import authenticate
 
 
 # Create your views here.
-# 首页
-def homepage(request):
-    return render(request, 'annotation/homepage.html')
+
 
 
 # 登录
@@ -111,11 +109,3 @@ def upload(request):
 def final_decide(request):
     return render(request, 'annotation/final_decide.html')
 
-
-def logout(request):
-    # 重定向到homepage
-    return HttpResponse('重定向到主界面，还没实现')
-
-
-def set_password(request):
-    return HttpResponse('重置密码界面')
