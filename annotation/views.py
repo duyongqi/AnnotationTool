@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.contrib.auth.decorators import login_required
 
 from AnnotationTool.settings import MEDIA_ROOT
 from .models import myUser, a_text, group, text
@@ -12,6 +13,7 @@ from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate
 from .form import UploadFile
 import os
+from django.contrib.auth import logout
 
 
 # Create your views here.
@@ -27,6 +29,7 @@ import os
 #     content = filefile.read()
 #     return content
 # 文本下载
+@login_required(login_url='/annotation/login/')
 def download(request, name):
     user = request.user
     # 获取用户
@@ -36,9 +39,13 @@ def download(request, name):
     return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name)
     # 返回文件到浏览器
 
-def xml_download(request,name):
+
+@login_required(login_url='/annotation/login/')
+def xml_download(request, name):
     user = request.user
-    a_t_object = a_text.objects.get(user=user.myuser,)
+    a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group,name=name)
+    path = (MEDIA_ROOT + '/' + a_t_object.xml.name).replace("\\", "/")
+    return FileResponse(open(path, 'rb'), as_attachment=True, filename=name)
 
 # 登录
 def login(request):
@@ -103,6 +110,7 @@ def register(request):
 
 
 # 用户以及用户组长文本选择（暂定为同一个界面）
+@login_required(login_url='/annotation/login/')
 def choose_text(request):
     user = request.user
     text_list = text.objects.filter(group=user.myuser.group)
@@ -114,9 +122,10 @@ def choose_text(request):
 
 
 # 用户标注界面
+@login_required(login_url='/annotation/login/')
 def note(request, name):
-    #记住对不同组的判断
-    t_object = text.objects.get(name=name,group=request.user.myuser.group)
+    # 记住对不同组的判断
+    t_object = text.objects.get(name=name, group=request.user.myuser.group)
     file_name = t_object.text.name
     name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
     with open(name_input, encoding='utf-8') as file_response:
@@ -130,6 +139,7 @@ def note(request, name):
 
 
 # 组长上传界面
+@login_required(login_url='/annotation/login/')
 def upload(request):
     if request.method == "POST":
         # 获取上传的表单
@@ -142,7 +152,7 @@ def upload(request):
         if form.is_valid:
             # group_name = user.myuser.group.group_name
             # group_in = group.objects.get(group_name=group_name)
-            if text.objects.filter(name=file.name,group=user.myuser.group):
+            if text.objects.filter(name=file.name, group=user.myuser.group):
                 message = '文件已经存在'
                 form = UploadFile()
                 return render(request, 'annotation/upload.html', {'form': form, 'message': message})
@@ -160,13 +170,18 @@ def upload(request):
 
 
 # 组长最终决定标注界面
+@login_required(login_url='/annotation/login/')
 def final_decide(request):
-    return render(request, 'annotation/final_decide.html')
+    # 首先通过组名查找所有上传过的文本，因为用户每提交一次标注，文本的index值会加一，所以可以通过判断index的值，确定是否在页面中显示出来
+    file_list = text.objects.filter(group=request.user.myuser.group)
+    return render(request, 'annotation/final_decide.html', {'file_list': file_list, 'user': request.user})
 
-#
-# def logout(request):
-#     # 重定向到homepage
-#     return HttpResponse('重定向到主界面，还没实现')
+
+@login_required(login_url='/annotation/login/')
+def logout_view(request):
+    # 重定向到homepage
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
 
 #
 # def set_password(request):

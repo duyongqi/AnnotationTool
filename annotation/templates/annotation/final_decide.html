@@ -1,13 +1,70 @@
 {% extends "annotation/extend_others.html" %}
 {% load static %}
+{% block js %}
+{% endblock %}
+{% block css%}
+    <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/bootstrap-theme.min.css' %}">
+	<style type="text/css">
+		.modal-header{padding: 0;}
+		/*.modal-content{border-radius: 0;}*/
+		.modal-dialog .close{position: absolute;top: 10px;right: 15px;}
+		.modal-dialog h3{font-size: 14px;height:42px;line-height: 42px;margin: 0;padding: 0 80px 0 20px;}
+		.modal-dialog label{font-weight: 400;}
+		.tips{line-height: 34px;font-size: 13px;}
+		.tips span{color: red;}
+		@media (min-width: 1080px){
+			/*模态框-距顶部距离*/
+			.modal-dialog {
+			    margin-top: 50px;
+			}
+			.col-sm-6{padding-left: 0;padding-right: 0;}
+
+		}
+            a:link    {color:firebrick;}
+            a:visited {color:firebrick;}
+            a:hover   {color:coral;
+             text-decoration: none;
+            }
+            a:active  {col
+            or:lightgoldenrodyellow;}
+            .modal-choose {
+              padding: 15px;
+              text-align: center;
+              border-top: 1px solid #e5e5e5;
+            }
+            .modal-choose .btn + .btn {
+              margin-bottom: 0;
+              margin-left: 5px;
+            }
+            .modal-choose .btn-group .btn + .btn {
+              margin-left: -1px;
+            }
+            .modal-choose .btn-block + .btn-block {
+              margin-left: 0;
+            }
+    </style>
+{% endblock%}
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>5555</title>
-</head>
-<body>
-<h1>final decide</h1>
-</body>
-</html>
+<div class="modal-header">
+    <button class="close" data-dismiss="modal">x</button>
+    <h3>Text to decide</h3>
+</div>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <ol type="1">
+{% for i in file_list %}
+            {% if i.index == user.myuser.group.member_number %}
+            <li >
+                <div class="modal-choose">
+                    <a href="{% url 'note' i.name %}" class = 'text-center' id="{{i.name}}">{{i.name}}</a>
+                </div>
+            </li>
+            {% endif %}
+{% endfor %}
+        </ol>
+    </div>
+</div>
+<!--普通用户：文本选择，注销，##修改密码-->
+<!--组长：最终标注，文本上传，注销，##修改密码-->
 {% endblock %}

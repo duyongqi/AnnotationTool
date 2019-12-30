@@ -12,6 +12,6 @@ urlpatterns = [
     path('download/<name>/', views.download, name='download'),
     path('xml_download/<name>/', views.xml_download, name='xml_download'),
     path('final_decide/',views.final_decide, name='final_decide'),
-    # path('logout', views.logout, name='logout')
+    path('logout/', views.logout_view, name='logout')
     # path('test/',views.test,name='test')
 ]

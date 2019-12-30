@@ -67,7 +67,7 @@ class text(models.Model):
     group = models.ForeignKey('group', on_delete=models.CASCADE)
     # 文本内容或者文本地址，未定
     text = models.FileField(upload_to=text_path)
-    # 文本标注次数
+    # 文本标注次数,每有新的用户对他进行标注，index值加一
     index = models.IntegerField(default=0)
     # 文本是否可以被普通用户标注
     limit = models.IntegerField(default=1)
