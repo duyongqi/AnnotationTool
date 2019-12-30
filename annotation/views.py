@@ -117,6 +117,10 @@ def upload(request):
         if form.is_valid:
             # group_name = user.myuser.group.group_name
             # group_in = group.objects.get(group_name=group_name)
+            if text.objects.filter(name=file.name):
+                message = '文件已经存在'
+                form = UploadFile()
+                return render(request,'annotation/upload.html',{'form':form, 'message': message})
             new_text = text(name=file.name, group=user.myuser.group, text=file)
             # 注意这里的user.myuser.group,我发现request里面包括user，myuser就是存在数据库的那个
             new_text.save()
