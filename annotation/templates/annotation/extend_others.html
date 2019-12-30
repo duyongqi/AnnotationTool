@@ -38,7 +38,7 @@
                     <li id="upload"><a href="{% url 'upload' %}">上传文本</a></li>
                 {% endif %}
                 {% if user and user.myuser.limits == 0 %}
-                    <li id="note"><a href="{% url 'note' %}">开始标注</a></li>
+                    <li id="choose_text"><a href="{% url 'choose_text' %}">选择文本</a></li>
                 {% endif %}
             </ul>
             <ul class="nav navbar-nav navbar-right">

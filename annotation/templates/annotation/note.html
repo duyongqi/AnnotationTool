@@ -1,13 +1,18 @@
 {% extends "annotation/extend_others.html" %}
 {% load static %}
 {% block content %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>4</title>
-</head>
-<body>
-<h1>note</h1>
-</body>
-</html>
+<div class="modal-header">
+    <button class="close" data-dismiss="modal">x</button>
+    <h3>Annotation</h3>
+</div>
+<div class="modal-dialog">
+    <div class="modal-content">
+        <p>{{file_content}}</p>
+        {% if user.myuser.limits == 1%}
+        <a href="{% url 'download' file.name %}">下载当前文本</a>
+        {% endif %}
+        <a href="{% url 'xml_download' file.name">下载xml文本</a>
+    </div>
+
+</div>
 {% endblock %}

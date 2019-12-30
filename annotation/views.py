@@ -1,32 +1,47 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from AnnotationTool.settings import MEDIA_ROOT
 from .models import myUser, a_text, group, text
 from django.urls import reverse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib.auth import authenticate
 from .form import UploadFile
+import os
 
 
 # Create your views here.
 # 首页
 # def homepage(request):
-#     return render(request, 'annotation/homepage.html')
+# #     return render(request, 'annotation/homepage.html')
+# # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# 获取文本内容
+# def get_content(file):
+#     filefile = open(file.text.,encoding='utf-8')
+#     content = filefile.read()
+#     return content
+# 文本下载
+def download(request, name):
+    user = request.user
+    # 获取用户
+    filepath = text.objects.get(group=user.myuser.group, name=name).text.name
+    # 通过文件名称和文件所在的组获取文件的路径
+    # 通过路径打开文件并读取
+    return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name)
+    # 返回文件到浏览器
+
+def xml_download(request,name):
+    user = request.user
+    a_t_object = a_text.objects.get(user=user.myuser,)
 
 # 登录
 def login(request):
-    # user = request.user
-    # content = {
-    #     'user': user
-    # }
-    # 使用auth自带的验证函数
-    # if request.user.is_authenticated:
-    #     return HttpResponseRedirect(reverse('choose_text'))
-
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -89,19 +104,29 @@ def register(request):
 
 # 用户以及用户组长文本选择（暂定为同一个界面）
 def choose_text(request):
-    if request.user.is_authenticated:
-        user = request.user
-    else:
-        user = None
+    user = request.user
+    text_list = text.objects.filter(group=user.myuser.group)
     content = {
-        'user': user,
+        'user': request.user,
+        'text_list': text_list,
     }
     return render(request, 'annotation/choose_text.html', content)
 
 
 # 用户标注界面
-def note(request):
-    return render(request, 'annotation/note.html')
+def note(request, name):
+    #记住对不同组的判断
+    t_object = text.objects.get(name=name,group=request.user.myuser.group)
+    file_name = t_object.text.name
+    name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
+    with open(name_input, encoding='utf-8') as file_response:
+        f_content = file_response.read()
+    content = {
+        'file_content': f_content,
+        'file': t_object,
+        'user': request.user
+    }
+    return render(request, 'annotation/note.html', content)
 
 
 # 组长上传界面
@@ -117,10 +142,10 @@ def upload(request):
         if form.is_valid:
             # group_name = user.myuser.group.group_name
             # group_in = group.objects.get(group_name=group_name)
-            if text.objects.filter(name=file.name):
+            if text.objects.filter(name=file.name,group=user.myuser.group):
                 message = '文件已经存在'
                 form = UploadFile()
-                return render(request,'annotation/upload.html',{'form':form, 'message': message})
+                return render(request, 'annotation/upload.html', {'form': form, 'message': message})
             new_text = text(name=file.name, group=user.myuser.group, text=file)
             # 注意这里的user.myuser.group,我发现request里面包括user，myuser就是存在数据库的那个
             new_text.save()

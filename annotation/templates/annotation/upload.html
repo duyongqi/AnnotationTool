@@ -1,6 +1,17 @@
 {% extends "annotation/extend_others.html" %}
 {% load static %}
-{% block js %}
+{% block css%}
+<style>
+            a:link    {color:firebrick;
+                         text-decoration: none;}
+            a:visited {color:firebrick;
+                         text-decoration: none;}
+            a:hover   {color:coral;
+             text-decoration: none;
+            }
+            a:active  {color:lightgoldenrodyellow;
+                         text-decoration: none;}
+</style>
 {% endblock %}
 {% block content %}
 <html lang="zh-CN">
@@ -22,6 +33,7 @@
             <div class="modal-header">
               <button class="close" data-dismiss="modal">x</button>
                <h3>文件上传</h3>
+                <a href="{% url 'choose_text'%}">已经上传的文本</a>
             </div>
             <div class="modal-group">
                 {{form.file_upload}}
@@ -30,6 +42,7 @@
                 <div class="text-center">
                 <h5>{{message}}</h5>
                 </div>
+
                 <button class="btn btn-primary" type="submit">上传</button>
             </div>
         </form>

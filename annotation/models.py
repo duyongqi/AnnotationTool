@@ -54,7 +54,7 @@ class a_text(models.Model):
     group = models.ForeignKey('group', on_delete=models.CASCADE)
     # xml文件
     xml = models.FileField(upload_to=xml_path)
-
+    #通过用户
     # xml约束文件
     # ttt = models.TextField(max_length=500)
     def __str__(self):
