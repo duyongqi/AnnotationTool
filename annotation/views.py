@@ -14,6 +14,7 @@ from django.contrib.auth import authenticate
 from .form import UploadFile
 import os
 from django.contrib.auth import logout
+from functools import wraps
 
 
 # Create your views here.
@@ -29,7 +30,20 @@ from django.contrib.auth import logout
 #     content = filefile.read()
 #     return content
 # 文本下载
+# 装饰器，只有组长有权限
+def leader_required(function):
+    @wraps(function)
+    def wrapfunction(request, *args, **kwargs):
+        if request.user.myuser.limits == 1:
+            return function(request, *args, **kwargs)
+        else:
+            return HttpResponseRedirect(reverse('choose_text'))
+
+    return wrapfunction
+
+
 @login_required(login_url='/annotation/login/')
+@leader_required
 def download(request, name):
     user = request.user
     # 获取用户
@@ -43,9 +57,10 @@ def download(request, name):
 @login_required(login_url='/annotation/login/')
 def xml_download(request, name):
     user = request.user
-    a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group,name=name)
+    a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group, name=name)
     path = (MEDIA_ROOT + '/' + a_t_object.xml.name).replace("\\", "/")
     return FileResponse(open(path, 'rb'), as_attachment=True, filename=name)
+
 
 # 登录
 def login(request):
@@ -139,6 +154,7 @@ def note(request, name):
 
 
 # 组长上传界面
+@leader_required
 @login_required(login_url='/annotation/login/')
 def upload(request):
     if request.method == "POST":
@@ -170,6 +186,7 @@ def upload(request):
 
 
 # 组长最终决定标注界面
+@leader_required
 @login_required(login_url='/annotation/login/')
 def final_decide(request):
     # 首先通过组名查找所有上传过的文本，因为用户每提交一次标注，文本的index值会加一，所以可以通过判断index的值，确定是否在页面中显示出来
