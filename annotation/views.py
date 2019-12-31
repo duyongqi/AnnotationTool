@@ -18,18 +18,6 @@ from functools import wraps
 
 
 # Create your views here.
-# 首页
-# def homepage(request):
-# #     return render(request, 'annotation/homepage.html')
-# # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# 获取文本内容
-# def get_content(file):
-#     filefile = open(file.text.,encoding='utf-8')
-#     content = filefile.read()
-#     return content
-# 文本下载
 # 装饰器，只有组长有权限
 def leader_required(function):
     @wraps(function)
@@ -50,17 +38,26 @@ def download(request, name):
     filepath = text.objects.get(group=user.myuser.group, name=name).text.name
     # 通过文件名称和文件所在的组获取文件的路径
     # 通过路径打开文件并读取
-    return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name)
+    return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name, content_type='application/octet-stream')
     # 返回文件到浏览器
 
 
 @login_required(login_url='/annotation/login/')
 def xml_download(request, name):
     user = request.user
-    a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group, name=name)
-    path = (MEDIA_ROOT + '/' + a_t_object.xml.name).replace("\\", "/")
-    return FileResponse(open(path, 'rb'), as_attachment=True, filename=name)
-
+    try:
+        a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group, name=name)
+    except:
+        a_t_object = None
+    if a_t_object:
+        path = (MEDIA_ROOT + '/' + a_t_object.xml.name).replace("\\", "/")
+        return FileResponse(open(path, 'rb'), as_attachment=True, filename=name)
+    else:
+        message = '你还未曾提交过标注'
+        request.session['message'] = message
+        return note(request,name,message)
+    #重定向无法实现，这个方法好像行不通，下载xml不能跳转路由
+    #已经解决，直接调用note 函数再传个参数
 
 # 登录
 def login(request):
@@ -138,7 +135,7 @@ def choose_text(request):
 
 # 用户标注界面
 @login_required(login_url='/annotation/login/')
-def note(request, name):
+def note(request, name,args=''):
     # 记住对不同组的判断
     t_object = text.objects.get(name=name, group=request.user.myuser.group)
     file_name = t_object.text.name
@@ -148,7 +145,8 @@ def note(request, name):
     content = {
         'file_content': f_content,
         'file': t_object,
-        'user': request.user
+        'user': request.user,
+        'message': args
     }
     return render(request, 'annotation/note.html', content)
 

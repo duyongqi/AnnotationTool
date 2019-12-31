@@ -11,7 +11,8 @@
         {% if user.myuser.limits == 1%}
         <a href="{% url 'download' file.name %}">下载当前文本</a>
         {% endif %}
-        <a href="{% url 'xml_download' file.name">下载xml文本</a>
+        <a href="{% url 'xml_download' file.name %}">下载xml文本</a>
+        {{message}}
     </div>
 
 </div>
