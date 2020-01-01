@@ -15,7 +15,8 @@ from .form import UploadFile
 import os
 from django.contrib.auth import logout
 from functools import wraps
-
+from .yizhixing import ntree_parser
+import xml.etree.ElementTree as ET
 
 # Create your views here.
 # 装饰器，只有组长有权限
@@ -38,7 +39,8 @@ def download(request, name):
     filepath = text.objects.get(group=user.myuser.group, name=name).text.name
     # 通过文件名称和文件所在的组获取文件的路径
     # 通过路径打开文件并读取
-    return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name, content_type='application/octet-stream')
+    return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name,
+                        content_type='application/octet-stream')
     # 返回文件到浏览器
 
 
@@ -55,9 +57,13 @@ def xml_download(request, name):
     else:
         message = '你还未曾提交过标注'
         request.session['message'] = message
-        return note(request,name,message)
-    #重定向无法实现，这个方法好像行不通，下载xml不能跳转路由
-    #已经解决，直接调用note 函数再传个参数
+        if user.myuser.limits == 0:
+            return note(request, name, message)
+        else:
+            return leader_note(request, name, message)
+    # 重定向无法实现，这个方法好像行不通，下载xml不能跳转路由
+    # 已经解决，直接调用note 函数再传个参数
+
 
 # 登录
 def login(request):
@@ -135,7 +141,7 @@ def choose_text(request):
 
 # 用户标注界面
 @login_required(login_url='/annotation/login/')
-def note(request, name,args=''):
+def note(request, name, args=''):
     # 记住对不同组的判断
     t_object = text.objects.get(name=name, group=request.user.myuser.group)
     file_name = t_object.text.name
@@ -149,6 +155,23 @@ def note(request, name,args=''):
         'message': args
     }
     return render(request, 'annotation/note.html', content)
+
+
+@login_required(login_url='/annotation/login/')
+def leader_note(request, name, args=''):
+    # 记住对不同组的判断
+    t_object = text.objects.get(name=name, group=request.user.myuser.group)
+    file_name = t_object.text.name
+    name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
+    with open(name_input, encoding='utf-8') as file_response:
+        f_content = file_response.read()
+    content = {
+        'file_content': f_content,
+        'file': t_object,
+        'user': request.user,
+        'message': args
+    }
+    return render(request, 'annotation/leader_note.html', content)
 
 
 # 组长上传界面
@@ -197,6 +220,16 @@ def logout_view(request):
     # 重定向到homepage
     logout(request)
     return HttpResponseRedirect(reverse('login'))
+
+
+
+
+
+
+
+
+
+
 
 #
 # def set_password(request):

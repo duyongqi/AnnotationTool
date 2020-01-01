@@ -1,19 +1,157 @@
 {% extends "annotation/extend_others.html" %}
 {% load static %}
+{% block js %}
+<script type="text/javascript">
+//import styles from './selectcss.css';
+   console.log("434");
+ //document.onmouseup=function replaceSelection() {
+function mygreen(){
+    if (window.getSelection) {
+        var selecter = window.getSelection();
+        var selectStr = selecter.toString();
+        if (selectStr.trim != "") {
+            var rang = selecter.getRangeAt(0);
+            var ele = document.createElement("span");
+            var x=selecter.anchorOffset;
+            var y=selecter.extentOffset;
+            var len=selecter.anchorNode.length;
+            ele.className='nite-writer-pen';
+            ele.textContent = selectStr;
+            rang.surroundContents(ele);
+
+
+
+
+            //before both chorme&page
+            var tempo=(rang.startContainer).firstChild;
+            var ele_pre=document.createElement("span");
+            ele_pre=rang.startContainer.appendChild(ele_pre);
+            ele_pre=rang.startContainer.insertBefore(ele_pre, tempo);
+            ele_pre.textContent = tempo.textContent;
+            (rang.startContainer).removeChild(tempo);
+
+
+
+
+
+            //after both chorme&page
+            var temp=(rang.startContainer).lastChild;
+            var ele_aft=document.createElement("span");
+            ele_aft=rang.startContainer.appendChild(ele_aft);
+            ele_aft=rang.startContainer.insertBefore(ele_aft, temp);
+            //console.log(temp.textContent);
+            ele_aft.textContent = temp.textContent;
+            (rang.startContainer).removeChild(temp);
+
+            if(rang.startContainer==document.getElementById("ori")){
+              console.log("3");
+
+            }
+            else{
+              console.log("xxx");
+
+              for (var i = 2; i >= 0; i--) {
+                var next_bro=(rang.startContainer).nextSibling;
+              //console.log(pre_bro.textContent);
+              //var documentFragment = rang.extractContents();
+              var oldChild =(rang.startContainer).removeChild((rang.startContainer).children[i]);
+              //console.log(oldChild);
+              oldChild=(document.getElementById("ori")).appendChild(oldChild);
+              oldChild=(document.getElementById("ori")).insertBefore(oldChild, next_bro);  }
+              //console.log(rang.startContainer) ;
+
+              //   var next_bro=(rang.startContainer).nextSibling;
+              // //console.log(pre_bro.textContent);
+              // //var documentFragment = rang.extractContents();
+              // var oldChild =(rang.startContainer).removeChild((rang.startContainer).children[1]);
+              // //console.log(oldChild);
+              // oldChild=(document.getElementById("ori")).appendChild(oldChild);
+              // oldChild=(document.getElementById("ori")).insertBefore(oldChild, next_bro);
+              // //console.log(rang.startContainer) ;
+
+              //   var next_bro=(rang.startContainer).nextSibling;
+              // //console.log(pre_bro.textContent);
+              // //var documentFragment = rang.extractContents();
+              // var oldChild =(rang.startContainer).removeChild((rang.startContainer).children[0]);
+              // //console.log(oldChild);
+              // oldChild=(document.getElementById("ori")).appendChild(oldChild);
+              // oldChild=(document.getElementById("ori")).insertBefore(oldChild, next_bro);
+              //console.log(rang.startContainer) ;
+              // }
+              var oldChild=(document.getElementById("ori")).removeChild((rang.startContainer));
+
+
+
+
+            }
+
+
+
+
+
+             var bt =document.createElement("button");           //createElement生成button对象
+             bt.innerHTML = '删除';
+             bt.onclick = function () {                          //绑定点击事件
+               console.log("su");
+               var documentFragment = rang.extractContents();
+               //ele.insertAdjacentText('afterbegin',"hu");
+             };
+             ele.appendChild(bt);
+
+
+
+
+
+
+
+
+        }}}
+</script>
+{% endblock %}
+{% block css %}
+<style type="text/css">
+      .content{
+  padding: 30px;
+  width: 700px;
+  line-height: 1.5em;
+}
+      .custom-underline{
+  border-bottom: 1px solid #f00;
+  font-style: normal;
+}
+
+.nite-writer-pen{
+  background-color: lightgreen;
+  border-radius: 5px;
+ /* box-shadow: 0 0 10px lightgreen;*/
+  font-style: normal;}
+  .ygh{
+    background-color: white;
+  border-radius: 5px;
+  /*box-shadow: 0 0 10px grey;*/
+  font-style: normal;}
+  }
+</style>
+{% endblock %}
 {% block content %}
 <div class="modal-header">
     <button class="close" data-dismiss="modal">x</button>
     <h3>Annotation</h3>
 </div>
 <div class="modal-dialog">
-    <div class="modal-content">
-        <p>{{file_content}}</p>
+    <div  class="content">
+        <span id="ori">
+        {{file_content}}
+        </span>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" onclick="mygreen()">green</button>
+    </div>
         {% if user.myuser.limits == 1%}
         <a href="{% url 'download' file.name %}">下载当前文本</a>
         {% endif %}
         <a href="{% url 'xml_download' file.name %}">下载xml文本</a>
         {{message}}
-    </div>
-
 </div>
+
 {% endblock %}

@@ -57,7 +57,7 @@
             {% if i.index == user.myuser.group.member_number %}
             <li >
                 <div class="modal-choose">
-                    <a href="{% url 'note' i.name %}" class = 'text-center' id="{{i.name}}">{{i.name}}</a>
+                    <a href="{% url 'leader_note' i.name %}" class = 'text-center' id="{{i.name}}">{{i.name}}</a>
                 </div>
             </li>
             {% endif %}
