@@ -53,17 +53,22 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <ol type="1">
-{% for i in file_list %}
-            {% if i.index == user.myuser.group.member_number %}
+        <div>
+            <form method="post">
+                {% csrf_token %}
+            <input type="number" name="key" step="0.01" max="1.0" min="0.0"/>
+            <button type="submit">确定</button>
+            </form>
+        </div>
+{% for name in file_list %}
             <li >
                 <div class="modal-choose">
-                    <a href="{% url 'leader_note' i.name %}" class = 'text-center' id="{{i.name}}">{{i.name}}</a>
+                    <a href="{% url 'leader_note' name %}" class = 'text-center' id="{{name}}">{{name}}</a>
                 </div>
             </li>
-            {% endif %}
 {% endfor %}
         </ol>
-    </div>
+    </ol>
 </div>
 <!--普通用户：文本选择，注销，##修改密码-->
 <!--组长：最终标注，文本上传，注销，##修改密码-->

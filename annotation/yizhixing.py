@@ -1,4 +1,4 @@
-# from AnnotationTool.settings import MEDIA_ROOT
+from AnnotationTool.settings import MEDIA_ROOT
 # # from .models import a_text
 import xml.etree.ElementTree as ET
 
@@ -24,7 +24,7 @@ def three_to_one(listlist, index1, index2=None):
 
 class parser():
     def parser_xml(self, xml):
-        tree = ET.parse('D:' + '/' + xml)
+        tree = ET.parse((MEDIA_ROOT + '/' + xml.name).replace('\\','/'))
         root = tree.getroot()
         # 最终返回的数组
         parse_string = []
@@ -49,6 +49,9 @@ class parser():
 class ntree_parser(parser):
     # 判断一致性
     def same(self, path_list):
+        if path_list == None:
+            dex = 0
+            return dex
         dex = 0
         # 把所有的解析后生成的数组放在一起，放在tree里
         tree = []
@@ -90,7 +93,7 @@ class ntree_parser(parser):
             for j in range(1, number_of_argument[0]):
                 argument = three_to_one(tree, i, j)
                 # 这里我还没决定要不要丢掉奇异的
-                print(argument)
+                # print(argument)
                 left_min = int(argument[0][0])
                 left_max = int(argument[leng_input - 1][0])
                 # print(left_min, left_max, 'left')
@@ -116,8 +119,6 @@ class ntree_parser(parser):
         dex = dex / one_tree_length[0]
         return dex
 # if __name__ == '__main__':
-#     dex = ntree_parser().same(['aa.xml', 'bb.xml', 'cc.xml'])
-#     print(dex)
 
 
 

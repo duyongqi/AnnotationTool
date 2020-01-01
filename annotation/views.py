@@ -48,12 +48,12 @@ def download(request, name):
 def xml_download(request, name):
     user = request.user
     try:
-        a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group, name=name)
+        a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group,name=(name.split('.')[0] + '.xml'))
     except:
         a_t_object = None
     if a_t_object:
         path = (MEDIA_ROOT + '/' + a_t_object.xml.name).replace("\\", "/")
-        return FileResponse(open(path, 'rb'), as_attachment=True, filename=name)
+        return FileResponse(open(path, 'rb'), as_attachment=True, filename=(name.split('.')[0] + '.xml'))
     else:
         message = '你还未曾提交过标注'
         request.session['message'] = message
@@ -211,8 +211,25 @@ def upload(request):
 @login_required(login_url='/annotation/login/')
 def final_decide(request):
     # 首先通过组名查找所有上传过的文本，因为用户每提交一次标注，文本的index值会加一，所以可以通过判断index的值，确定是否在页面中显示出来
-    file_list = text.objects.filter(group=request.user.myuser.group)
-    return render(request, 'annotation/final_decide.html', {'file_list': file_list, 'user': request.user})
+    if request.method == 'POST':
+        key = float(request.POST.get('key'))
+    else:
+        key = 1
+    txt_list = text.objects.filter(group=request.user.myuser.group)
+    file_list = []
+    for t in txt_list:
+        if t.index == (request.user.myuser.group.member_number - 1):
+            xml_list = a_text.objects.filter(name=(t.name.split('.')[0] + '.xml'), group=request.user.myuser.group)
+            xml_path = []
+            for x in xml_list:
+                xml_path.append(x.xml)
+            dex = ntree_parser().same(xml_path)
+            if dex == 1:
+                t.limit = 0
+                #删除标注，存储最终标注，直接以组长的身份上传
+            if dex >= key:
+                file_list.append(t.name)
+    return render(request, 'annotation/final_decide.html', {'file_list': file_list})
 
 
 @login_required(login_url='/annotation/login/')

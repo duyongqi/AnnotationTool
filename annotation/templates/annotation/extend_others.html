@@ -34,7 +34,7 @@
         <div class="collapse navbar-collapse" id="navbar-collapse-basepage">
             <ul class="nav navbar-nav">
                 {% if user and user.myuser.limits == 1 %}
-                    <li id="final_decide"><a href="{% url 'final_decide' %}">最终标注</a></li>
+                    <li id="final_decide"><a href="{% url 'final_decide'  %}">最终标注</a></li>
                     <li id="upload"><a href="{% url 'upload' %}">上传文本</a></li>
                 {% endif %}
                 {% if user and user.myuser.limits == 0 %}

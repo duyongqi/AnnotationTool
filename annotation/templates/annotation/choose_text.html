@@ -56,10 +56,10 @@
 {% for i in text_list %}
     <li >
     <div class="modal-choose">
-        {% if user.myuser.limits == 0 %}
+        {% if user.myuser.limits == 0 and i.limit == 1 %}
             <a href="{% url 'note' i.name %}" class = 'text-center' id="{{i.name}}">{{i.name}}</a>
         {% endif %}
-        {% if user.myuser.limits == 1 %}
+        {% if user.myuser.limits == 1 and i.limit == 1 %}
             <a href="#" class = 'text-center' id="{{i.name}}1">{{i.name}}</a>
         {% endif %}
     </div>
