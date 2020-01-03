@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse,JsonResponse
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib.auth.decorators import user_passes_test, login_required
@@ -17,7 +17,10 @@ from django.contrib.auth import logout
 from functools import wraps
 from .yizhixing import ntree_parser
 import xml.etree.ElementTree as ET
-
+import json
+import dicttoxml, xmltodict
+import xmltodict
+from xml.dom.minidom import parseString
 # Create your views here.
 # 装饰器，只有组长有权限
 def leader_required(function):
@@ -142,6 +145,13 @@ def choose_text(request):
 # 用户标注界面
 @login_required(login_url='/annotation/login/')
 def note(request, name, args=''):
+    if request.method == 'POST':
+        # print(request.body.decode('utf-8'))
+        jsondict = json.loads(request.body,encoding='utf-8')
+        xml = xmltodict.unparse(jsondict,pretty=True)#dict转xml
+        # xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
+        dom = parseString(xml)
+        print(dom.toprettyxml())
     # 记住对不同组的判断
     t_object = text.objects.get(name=name, group=request.user.myuser.group)
     file_name = t_object.text.name
@@ -172,6 +182,8 @@ def leader_note(request, name, args=''):
         'message': args
     }
     return render(request, 'annotation/leader_note.html', content)
+# def post(request):
+
 
 
 # 组长上传界面

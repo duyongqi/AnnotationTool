@@ -1,111 +1,138 @@
 {% extends "annotation/extend_others.html" %}
 {% load static %}
 {% block js %}
-<script type="text/javascript">
-//import styles from './selectcss.css';
-   console.log("434");
- //document.onmouseup=function replaceSelection() {
-function mygreen(){
-    if (window.getSelection) {
-        var selecter = window.getSelection();
-        var selectStr = selecter.toString();
-        if (selectStr.trim != "") {
-            var rang = selecter.getRangeAt(0);
-            var ele = document.createElement("span");
-            var x=selecter.anchorOffset;
-            var y=selecter.extentOffset;
-            var len=selecter.anchorNode.length;
-            ele.className='nite-writer-pen';
-            ele.textContent = selectStr;
-            rang.surroundContents(ele);
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous">
+</script>
+<script type="text/javascript" src="{% static 'annotationtry/js/leader_note.js' %}"></script>
+<script >
 
-
-
-
-            //before both chorme&page
-            var tempo=(rang.startContainer).firstChild;
-            var ele_pre=document.createElement("span");
-            ele_pre=rang.startContainer.appendChild(ele_pre);
-            ele_pre=rang.startContainer.insertBefore(ele_pre, tempo);
-            ele_pre.textContent = tempo.textContent;
-            (rang.startContainer).removeChild(tempo);
-
-
-
-
-
-            //after both chorme&page
-            var temp=(rang.startContainer).lastChild;
-            var ele_aft=document.createElement("span");
-            ele_aft=rang.startContainer.appendChild(ele_aft);
-            ele_aft=rang.startContainer.insertBefore(ele_aft, temp);
-            //console.log(temp.textContent);
-            ele_aft.textContent = temp.textContent;
-            (rang.startContainer).removeChild(temp);
-
-            if(rang.startContainer==document.getElementById("ori")){
-              console.log("3");
-
+$(function() {
+    alert('haha');
+    jQuery(document).ajaxSend(function(event, xhr, settings) {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
             }
-            else{
-              console.log("xxx");
+            return cookieValue;
+        }
+        function sameOrigin(url) {
+            // url could be relative or scheme relative or absolute
+            var host = document.location.host; // host + port
+            var protocol = document.location.protocol;
+            var sr_origin = '//' + host;
+            var origin = protocol + sr_origin;
+            // Allow absolute or scheme relative URLs to same origin
+            return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+                (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+                // or any other URL that isn't scheme relative or absolute i.e relative.
+                !(/^(\/\/|http:|https:).*/.test(url));
+        }
+        function safeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
 
-              for (var i = 2; i >= 0; i--) {
-                var next_bro=(rang.startContainer).nextSibling;
-              //console.log(pre_bro.textContent);
-              //var documentFragment = rang.extractContents();
-              var oldChild =(rang.startContainer).removeChild((rang.startContainer).children[i]);
-              //console.log(oldChild);
-              oldChild=(document.getElementById("ori")).appendChild(oldChild);
-              oldChild=(document.getElementById("ori")).insertBefore(oldChild, next_bro);  }
-              //console.log(rang.startContainer) ;
-
-              //   var next_bro=(rang.startContainer).nextSibling;
-              // //console.log(pre_bro.textContent);
-              // //var documentFragment = rang.extractContents();
-              // var oldChild =(rang.startContainer).removeChild((rang.startContainer).children[1]);
-              // //console.log(oldChild);
-              // oldChild=(document.getElementById("ori")).appendChild(oldChild);
-              // oldChild=(document.getElementById("ori")).insertBefore(oldChild, next_bro);
-              // //console.log(rang.startContainer) ;
-
-              //   var next_bro=(rang.startContainer).nextSibling;
-              // //console.log(pre_bro.textContent);
-              // //var documentFragment = rang.extractContents();
-              // var oldChild =(rang.startContainer).removeChild((rang.startContainer).children[0]);
-              // //console.log(oldChild);
-              // oldChild=(document.getElementById("ori")).appendChild(oldChild);
-              // oldChild=(document.getElementById("ori")).insertBefore(oldChild, next_bro);
-              //console.log(rang.startContainer) ;
-              // }
-              var oldChild=(document.getElementById("ori")).removeChild((rang.startContainer));
-
-
-
-
-            }
-
-
-
-
-
-             var bt =document.createElement("button");           //createElement生成button对象
-             bt.innerHTML = '删除';
-             bt.onclick = function () {                          //绑定点击事件
-               console.log("su");
-               var documentFragment = rang.extractContents();
-               //ele.insertAdjacentText('afterbegin',"hu");
-             };
-             ele.appendChild(bt);
-
-
-
-
-
-
-
-
-        }}}
+        if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+            xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        }
+    });
+    $("#submit").click(function () {
+        var json_obj ={
+              "Document": {
+                "@ID": "cc.txt",
+                "event": [
+                  {
+                    "@ID": "1",
+                    "@TYPE": "会见会谈",
+                    "event_trigger": {
+                      "@START": "26",
+                      "@END": "27",
+                      "@ROLE": "会谈",
+                      "#text": "会谈"
+                    },
+                    "event_argument": [
+                      {
+                        "@START": "4",
+                        "@END": "6",
+                        "@ROLE": "参与方",
+                        "#text": "习近平"
+                      },
+                      {
+                        "@START": "20",
+                        "@END": "23",
+                        "@ROLE": "参与方",
+                        "#text": "杜特尔特"
+                      },
+                      {
+                        "@START": "26",
+                        "@END": "26",
+                        "@ROLE": "时间",
+                        "#text": "20"
+                      },
+                      {
+                        "@START": "11",
+                        "@END": "13",
+                        "@ROLE": "地点",
+                        "#text": "马尼拉"
+                      }
+                    ]
+                  },
+                  {
+                    "@ID": "1",
+                    "@TYPE": "会见会谈",
+                    "event_trigger": {
+                      "@START": "24",
+                      "@END": "27",
+                      "@ROLE": "会谈",
+                      "#text": "会谈"
+                    },
+                    "event_argument": [
+                      {
+                        "@START": "4",
+                        "@END": "6",
+                        "@ROLE": "参与方",
+                        "#text": "主席习近平"
+                      },
+                      {
+                        "@START": "20",
+                        "@END": "23",
+                        "@ROLE": "参与方",
+                        "#text": "总统杜特尔特"
+                      },
+                      {
+                        "@START": "7",
+                        "@END": "9",
+                        "@ROLE": "时间",
+                        "#text": "20日"
+                      },
+                      {
+                        "@START": "10",
+                        "@END": "13",
+                        "@ROLE": "地点",
+                        "#text": "马尼拉"
+                      }
+                    ]
+                  }
+                ]
+              }
+            };
+    var name = $("#filename").text();
+    var json_str = JSON.stringify(json_obj);
+    $.post('', json_str);
+    alert('hhh');
+})
+})
 </script>
 {% endblock %}
 {% block css %}
@@ -137,6 +164,7 @@ function mygreen(){
 <div class="modal-header">
     <button class="close" data-dismiss="modal">x</button>
     <h3>Annotation</h3>
+    <h2 id="filename">{{file.name}}</h2>
 </div>
 <div class="modal-dialog">
     <div  class="content">
@@ -152,6 +180,12 @@ function mygreen(){
         {% endif %}
         <a href="{% url 'xml_download' file.name %}">下载xml文本</a>
         {{message}}
+    <div>
+        <button  class="btn btn-warning" id="submit">提交</button>
+        <button class="btn btn-warning" name="return">
+            <a href="{% url 'choose_text' %}" class="link_button ">退出</a>
+        </button>
+    </div>
 </div>
 
 {% endblock %}
