@@ -25,6 +25,7 @@ def three_to_one(listlist, index1, index2=None):
 class parser():
     def parser_xml(self, xml):
         tree = ET.parse((MEDIA_ROOT + '/' + xml.name).replace('\\','/'))
+        #xml里存的是路径，xml.name是路径，不是名称
         root = tree.getroot()
         # 最终返回的数组
         parse_string = []

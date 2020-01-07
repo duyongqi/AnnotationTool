@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<Document ID="cc.txt">
+	
+	
+	<event ID="1" TYPE="会见会谈">
+		
+		
+		<event_trigger END="27" ROLE="会谈" START="26">会谈</event_trigger>
+		
+		
+		<event_argument END="6" ROLE="参与方" START="4">习近平</event_argument>
+		
+		
+		<event_argument END="23" ROLE="参与方" START="20">杜特尔特</event_argument>
+		
+		
+		<event_argument END="26" ROLE="时间" START="26">20</event_argument>
+		
+		
+		<event_argument END="13" ROLE="地点" START="11">马尼拉</event_argument>
+		
+	
+	</event>
+	
+	
+	<event ID="1" TYPE="会见会谈">
+		
+		
+		<event_trigger END="27" ROLE="会谈" START="24">会谈</event_trigger>
+		
+		
+		<event_argument END="6" ROLE="参与方" START="4">主席习近平</event_argument>
+		
+		
+		<event_argument END="23" ROLE="参与方" START="20">总统杜特尔特</event_argument>
+		
+		
+		<event_argument END="9" ROLE="时间" START="7">20日</event_argument>
+		
+		
+		<event_argument END="13" ROLE="地点" START="10">马尼拉</event_argument>
+		
+	
+	</event>
+	
+
+</Document>
