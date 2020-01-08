@@ -1,0 +1,32 @@
+
+      .content{
+  padding: 30px;
+  width: 700px;
+  line-height: 1.5em;
+}
+.custom-underline{
+  border-bottom: 1px solid #F75000;
+  font-style: normal;
+}
+
+.location-green{
+  background-color: lightgreen;
+  border-radius: 5px;
+ /* box-shadow: 0 0 10px lightgreen;*/
+  font-style: normal;}
+.thing-yellow{
+    background-color: yellow;
+  border-radius: 5px;
+  /*box-shadow: 0 0 10px grey;*/
+  font-style: normal;}
+
+.people-purple{
+    background-color: plum;
+  border-radius: 5px;
+  /*box-shadow: 0 0 10px grey;*/
+  font-style: normal;}
+.time-blue{
+    background-color: lightblue;
+  border-radius: 5px;
+  /*box-shadow: 0 0 10px grey;*/
+  font-style: normal;}  

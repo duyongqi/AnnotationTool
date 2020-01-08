@@ -9,6 +9,7 @@ urlpatterns = [
     path('choose_text/',views.choose_text,name='choose_text'),
     path('note/<name>/',views.note, name='note'),
     path('leader_note/<name>/', views.leader_note.as_view(), name='leader_note'),
+    path('leader_note1/<name>/', views.leader_note1.as_view(), name='leader_note1'),
     path('upload/',views.upload, name='upload'),
     path('download/<name>/', views.download, name='download'),
     path('xml_download/<name>/', views.xml_download, name='xml_download'),

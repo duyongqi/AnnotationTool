@@ -19,13 +19,13 @@ import json
 import os
 import dicttoxml
 import xmltodict
+from xmltodict import _DictSAXHandler
 from xml.dom.minidom import parseString
 from django.views import View
 import xml.etree.ElementTree as ET
 from django.utils.decorators import method_decorator
 # Create your views here.
 # 装饰器，只有组长有权限
-
 
 def leader_required(function):
     @wraps(function)
@@ -60,7 +60,8 @@ def xml_download(request, name):
         a_t_object = None
     if a_t_object:
         path = (MEDIA_ROOT + '/' + a_t_object.xml.name).replace("\\", "/")
-        return FileResponse(open(path, 'rb'), as_attachment=True, filename=(name.split('.')[0] + '.xml'))
+        return FileResponse(open(path, 'rb'), as_attachment=True, filename=(name.split('.')[0] + '.xml'),
+                            content_type='application/octet-stream')
     else:
         message = '你还未曾提交过标注'
         request.session['message'] = message
@@ -151,13 +152,25 @@ def choose_text(request):
 def note(request, name, args=''):
     if request.method == 'POST':
         # print(request.body.decode('utf-8'))
+        # print(request.body)
+        # request.body.replace(b'@',b'JJ')
+        # print(request.body)
+        # request.body.replace(b'JJ', b'@')
         jsondict = json.loads(request.body, encoding='utf-8')
-        xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')  # dict转xml
+        # j = str(jsondict1)
+        # j.replace("@","JJ")
+        # print(j)
+        # jsondict = json.loads(j,encoding='utf-8')
+        # jsondict.replace('@','JJ')
+        # print(jsondict)
+        # jsondict.replace('JJ', '@')
+        # xmltodict._DictSAXHandler.__init__(object,attr_prefix = 'JJ')
+        xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  )  # dict转xml
         # xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
         dom1 = parseString(xml)
         #转化成空行缩进比较合适的形式
         dom= dom1.toprettyxml()
-        # print(dom)
+        print(dom)
         try:
             a_text_init = a_text.objects.get(name=name.split('.')[0] + '.xml',
                                              user=request.user.myuser,group=request.user.myuser.group)
@@ -165,6 +178,7 @@ def note(request, name, args=''):
             a_text_init = None
         if a_text_init:
             with open((MEDIA_ROOT + '/' + a_text_init.xml.name).replace('\\','/'),'r+',encoding='utf-8') as file:
+                file.truncate()
                 file.write(dom)
         else:
             path = (MEDIA_ROOT + '/' + name.split('.')[0] + '.xml').replace('\\', '/')
@@ -214,8 +228,21 @@ class leader_note(View):
         # with open(name_input, encoding='utf-8') as file_response:
         #     f_content = file_response.read()
         # #到这里获取到了text文本，接下来要将xml传给js,等待xml解析
-        annotation_list = a_text.objects.filter(name=name.split('.')[0] + '.xml',)
-        print('hhh')
+        # annotation_list = a_text.objects.filter(name=name.split('.')[0] + '.xml',group=request.user.myuser.group)
+        # print(annotation_list)
+        x_object_all = a_text.objects.filter(name=name.split('.')[0] + '.xml',group=request.user.myuser.group)
+        t_json = []
+        for i in x_object_all:
+            # 只有组员的xml会被展示
+            if i.user.limits == 0:
+                xfile_name = i.xml.name
+                xname_input = (MEDIA_ROOT + '/' + xfile_name).replace("\\", "/")
+                with open(xname_input, encoding='utf-8') as f:
+                    str_xml = f.read()
+                str_xml = str_xml.replace('&', '&#38;')  # xml格式不能有"&"符号
+                doc = xmltodict.parse(str_xml, encoding='utf-8')
+                doc2 = json.dumps(doc, indent=4)
+                t_json.append(doc2)
         t_object = text.objects.get(name=name, group=request.user.myuser.group)
         file_name = t_object.text.name
         name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
@@ -225,9 +252,10 @@ class leader_note(View):
             'file_content': f_content,
             'file': t_object,
             'user': request.user.myuser,
-            'message': args
+            'message': args,
+            't_json': t_json[0]
         }
-        return render(request, 'annotation/note.html', content)
+        return render(request, 'annotation/leader_note.html', content)
     @method_decorator(login_required)
     def post(self,request,name):
         # print(request.body.decode('utf-8'))
@@ -275,6 +303,92 @@ class leader_note(View):
         return HttpResponseRedirect(reverse('final_decide'))
 
 # def post(request):
+class leader_note1(View):
+
+    @method_decorator(login_required)
+    def get(self,request,name,args=''):
+        # #args是xml_download里传来的信息
+        # t_object = text.objects.get(name=name, group=request.user.myuser.group)
+        # #根据名称和组号获取文件
+        # file_name = t_object.text.name
+        # name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
+        # #打开文件
+        # with open(name_input, encoding='utf-8') as file_response:
+        #     f_content = file_response.read()
+        # #到这里获取到了text文本，接下来要将xml传给js,等待xml解析
+        # annotation_list = a_text.objects.filter(name=name.split('.')[0] + '.xml',)
+        x_object_all = a_text.objects.filter(name=name.split('.')[0] + '.xml', group=request.user.myuser.group)
+        t_json = []
+        for i in x_object_all:
+            # 只有组员的xml会被展示
+            if i.user.limits == 0:
+                xfile_name = i.xml.name
+                xname_input = (MEDIA_ROOT + '/' + xfile_name).replace("\\", "/")
+                with open(xname_input, encoding='utf-8') as f:
+                    str_xml = f.read()
+                str_xml = str_xml.replace('&', '&#38;')  # xml格式不能有"&"符号
+                doc = xmltodict.parse(str_xml, encoding='utf-8')
+                doc2 = json.dumps(doc, indent=4)
+                t_json.append(doc2)
+        t_object = text.objects.get(name=name, group=request.user.myuser.group)
+        file_name = t_object.text.name
+        name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
+        with open(name_input, encoding='utf-8') as file_response:
+            f_content = file_response.read()
+        content = {
+            'file_content': f_content,
+            'file': t_object,
+            'user': request.user.myuser,
+            'message': args,
+            't_json': t_json[1]
+        }
+        return render(request, 'annotation/leader_note1.html', content)
+    @method_decorator(login_required)
+    def post(self,request,name):
+        # print(request.body.decode('utf-8'))
+        jsondict = json.loads(request.body, encoding='utf-8')
+        xml = xmltodict.unparse(jsondict, pretty=True)  # dict转xml
+        # xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
+        dom1 = parseString(xml)
+        # # print(name)
+        dom = dom1.toprettyxml()
+        # print(dom)
+        print(dom)
+        #新建一个组长的标注记录，存储最终标注
+        # tree = ET.parse(dom)
+        # root = tree.getroot()
+        path = (MEDIA_ROOT + '/' +  name.split('.')[0] + '.xml').replace('\\','/')
+        print(path)
+        #以写的形式打开，如果不存在会新建，但是以独写的形式打开如果不存在不会新建，
+        # 所以先以写的形式打开，然后写，然后关闭，然后以独写的形式打开，就可以对文本进行读取了
+        f = open(path,'w',encoding='utf-8')
+        f.write(dom)
+        f.close()
+        file_init = open(path,'r+',encoding='utf-8')
+        file = File(file_init,name=name.split('.')[0] + '.xml')
+        # print(file.readable())
+        # print(type(file))
+        # file.close()
+        # dom.saveXML(path)
+        #这里加上的原因是，在之前的upload上面，得到的file是一个'django.core.files.uploadedfile.InMemoryUploadedFile'的class，与user关联
+        # 但是在这里，file就是个普通文件，file.name只是个字符串，所以在models里面得不到user的任何信息
+        # f_name = (MEDIA_ROOT + '/' + 'xml' + '/' + request.user.myuser.group.group_name + '/' + request.user.myuser.user.username +'/' + file.name.split('/')[-1]).replace('\\','/')
+        # print(f_name)
+        new_atxt = a_text(name=name.split('.')[0] + '.xml',user=request.user.myuser,group=request.user.myuser.group,xml=file)
+        new_atxt.save()
+        # print(new_atxt.xml.name)
+        file.close()
+        os.remove(path)
+        remove_text = text.objects.get(name=name,group=request.user.myuser.group)
+        # print(remove_text[0].limit)
+        # remove_text[0].limit = remove_text[0].limit - 1
+        # print(remove_text[0].limit)
+        # remove_text[0].save()
+        #filter数组的0，和get不一样
+        remove_text.limit = 0
+        remove_text.save()
+        return HttpResponseRedirect(reverse('final_decide'))
+
 
 
 # 组长上传界面

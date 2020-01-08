@@ -7,8 +7,10 @@
   crossorigin="anonymous">
 </script>
 <script type="text/javascript" src="{% static 'annotationtry/js/leader_note.js' %}"></script>
+<script src="{% static 'annotationtry/js/mark.js' %}"></script>
+<script src="{% static 'annotationtry/js/setrole.js' %}"></script>
+<script src="{% static 'annotationtry/js/tojson.js' %}"></script>
 <script >
-
 $(function() {
     alert('haha');
     jQuery(document).ajaxSend(function(event, xhr, settings) {
@@ -47,118 +49,19 @@ $(function() {
             xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
         }
     });
-    $("#submit").click(function () {
-        var json_obj ={
-              "Document": {
-                "@ID": "cc.txt",
-                "event": [
-                  {
-                    "@ID": "1",
-                    "@TYPE": "会见会谈",
-                    "event_trigger": {
-                      "@START": "26",
-                      "@END": "27",
-                      "@ROLE": "会谈",
-                      "#text": "会谈"
-                    },
-                    "event_argument": [
-                      {
-                        "@START": "4",
-                        "@END": "6",
-                        "@ROLE": "参与方",
-                        "#text": "习近平"
-                      },
-                      {
-                        "@START": "20",
-                        "@END": "23",
-                        "@ROLE": "参与方",
-                        "#text": "杜特尔特"
-                      },
-                      {
-                        "@START": "26",
-                        "@END": "26",
-                        "@ROLE": "时间",
-                        "#text": "20"
-                      },
-                      {
-                        "@START": "11",
-                        "@END": "13",
-                        "@ROLE": "地点",
-                        "#text": "马尼拉"
-                      }
-                    ]
-                  },
-                  {
-                    "@ID": "1",
-                    "@TYPE": "会见会谈",
-                    "event_trigger": {
-                      "@START": "24",
-                      "@END": "27",
-                      "@ROLE": "会谈",
-                      "#text": "会谈"
-                    },
-                    "event_argument": [
-                      {
-                        "@START": "4",
-                        "@END": "6",
-                        "@ROLE": "参与方",
-                        "#text": "主席习近平"
-                      },
-                      {
-                        "@START": "20",
-                        "@END": "23",
-                        "@ROLE": "参与方",
-                        "#text": "总统杜特尔特"
-                      },
-                      {
-                        "@START": "7",
-                        "@END": "9",
-                        "@ROLE": "时间",
-                        "#text": "20日"
-                      },
-                      {
-                        "@START": "10",
-                        "@END": "13",
-                        "@ROLE": "地点",
-                        "#text": "马尼拉"
-                      }
-                    ]
-                  }
-                ]
-              }
-            };
-    var name = $("#filename").text();
-    var json_str = JSON.stringify(json_obj);
-    $.post('', json_str);
-    alert('hhh');
-})
-})
+     $("#submit").click(function () {
+        var event = create_json();
+        array1 = event;
+        console.log(array1);
+        var json_str = JSON.stringify(array1);
+        console.log(json_str);
+        $.post('', json_str);
+        });
+        })
 </script>
 {% endblock %}
 {% block css %}
-<style type="text/css">
-      .content{
-  padding: 30px;
-  width: 700px;
-  line-height: 1.5em;
-}
-      .custom-underline{
-  border-bottom: 1px solid #f00;
-  font-style: normal;
-}
-
-.nite-writer-pen{
-  background-color: lightgreen;
-  border-radius: 5px;
- /* box-shadow: 0 0 10px lightgreen;*/
-  font-style: normal;}
-  .ygh{
-    background-color: white;
-  border-radius: 5px;
-  /*box-shadow: 0 0 10px grey;*/
-  font-style: normal;}
-  }
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/note.css' %}"/>
 {% endblock %}
 {% block content %}
 <div class="modal-header">
@@ -168,18 +71,65 @@ $(function() {
 </div>
 <div class="modal-dialog">
     <div  class="content">
-        <span id="ori">
-        {{file_content}}
-        </span>
+        <span id="ori">{{file_content}}</span>
     </div>
     <div>
-        <button type="button" class="btn btn-primary" onclick="mygreen()">green</button>
+            <button type="button" class="btn btn-primary"
+              onclick="mytrigger('custom-underline',(this.flag_te),'1')">会见会谈</button>
+            <button type="button" class="btn btn-primary"
+              onclick="mymark('people-purple',this.flag_te,'1')">参与方</button>
+            <button type="button" class="btn btn-primary"
+              onclick="mymark('time-blue',this.flag_te,'1')">时间</button>
+            <button type="button" class="btn btn-primary"
+              onclick="mymark('location-green',this.flag_te,'1')">地点</button>
+        </div>
+    <div>
+        <button type="button" class="btn btn-primary"
+          onclick="mytrigger('custom-underline',(this.flag_te),'2')">签署文件</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('people-purple',this.flag_te,'2')">签署方</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('thing-yellow',this.flag_te,'2')">文件</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('time-blue',this.flag_te,'2')">时间</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('location-green',this.flag_te,'2')">签署地点</button>
+
     </div>
-        {% if user.myuser.limits == 1%}
-        <a href="{% url 'download' file.name %}">下载当前文本</a>
-        {% endif %}
-        <a href="{% url 'xml_download' file.name %}">下载xml文本</a>
-        {{message}}
+    <div>
+        <button type="button" class="btn btn-primary"
+          onclick="mytrigger('custom-underline',(this.flag_te),'3')">设施启用</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('people-purple',this.flag_te,'3')">设施修建方</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('thing-yellow',this.flag_te,'3')">设施名称</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('time-blue',this.flag_te,'3')">启用时间</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('location-green',this.flag_te,'3')">设施地点</button>
+
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary"
+          onclick="mytrigger('custom-underline',(this.flag_te),'4')">签署文件</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('people-purple',this.flag_te,'4')">举办方</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('thing-yellow',this.flag_te,'4')">活动名称</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('time-blue',this.flag_te,'4')">活动时间</button>
+        <button type="button" class="btn btn-primary"
+          onclick="mymark('location-green',this.flag_te,'4')">活动地点</button>
+
+    </div>
+    <div><button type="submit" class="btn btn-warning"
+          onclick="create_json()">保存</button>
+    </div>
+    {% if user.myuser.limits == 1%}
+    <a href="{% url 'download' file.name %}">下载当前文本</a>
+    {% endif %}
+    <a href="{% url 'xml_download' file.name %}">下载xml文本</a>
+    {{message}}
     <div>
         <button  class="btn btn-warning" id="submit">提交</button>
         <button class="btn btn-warning" name="return">
@@ -187,5 +137,4 @@ $(function() {
         </button>
     </div>
 </div>
-
 {% endblock %}
