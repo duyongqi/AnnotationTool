@@ -53,6 +53,7 @@ def download(request, name):
 
 @login_required(login_url='/annotation/login/')
 def xml_download(request, name):
+    # print('hhh')
     user = request.user
     try:
         a_t_object = a_text.objects.get(user=user.myuser, group=user.myuser.group, name=(name.split('.')[0] + '.xml'))
@@ -157,14 +158,6 @@ def note(request, name, args=''):
         # print(request.body)
         # request.body.replace(b'JJ', b'@')
         jsondict = json.loads(request.body, encoding='utf-8')
-        # j = str(jsondict1)
-        # j.replace("@","JJ")
-        # print(j)
-        # jsondict = json.loads(j,encoding='utf-8')
-        # jsondict.replace('@','JJ')
-        # print(jsondict)
-        # jsondict.replace('JJ', '@')
-        # xmltodict._DictSAXHandler.__init__(object,attr_prefix = 'JJ')
         xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8'                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  )  # dict转xml
         # xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
         dom1 = parseString(xml)
@@ -197,13 +190,17 @@ def note(request, name, args=''):
             # print(new_atxt.xml.name)
             file.close()
             os.remove(path)
+            #如果从前没有标注过就让文本index加一
+            text_init = text.objects.get(name=name,group=request.user.myuser.group)
+            text_init.index +=1
+            text_init.save()
         return HttpResponseRedirect(reverse('choose_text'))
 
     # 记住对不同组的判断
     t_object = text.objects.get(name=name, group=request.user.myuser.group)
     file_name = t_object.text.name
     name_input = (MEDIA_ROOT + '/' + file_name).replace("\\", "/")
-    with open(name_input, encoding='utf-8') as file_response:
+    with open(name_input,encoding='utf-8') as file_response:
         f_content = file_response.read()
     content = {
         'file_content': f_content,
@@ -444,10 +441,29 @@ def final_decide(request):
                 if x.user.limits == 0:
                     xml_path.append(x.xml)
             dex = ntree_parser().same(xml_path)
+            print(dex)
             if dex == 1:
                 t.limit = 0
                 # 删除标注，存储最终标注，直接以组长的身份上传
-            if dex >= key:
+                if not a_text.objects.filter(user=request.user.myuser,
+                                             group=request.user.myuser.group,name=t.name.split('.')[0] + '.xml'):
+                    with open((MEDIA_ROOT + '/' + xml_list[0].xml.name).replace('\\','/'),encoding='utf-8') as ff:
+                        # print(MEDIA_ROOT + xml_list[0].xml.name)
+                        xml_set = str(ff.read())
+                    path = (MEDIA_ROOT + '/' + t.name.split('.')[0] + '.xml').replace('\\', '/')
+                    f = open(path, 'w', encoding='utf-8')
+                    f.write(xml_set)
+                    f.close()
+                    file_init = open(path, 'r+', encoding='utf-8')
+                    file = File(file_init, name=t.name.split('.')[0] + '.xml')
+                    new_atxt = a_text(name=t.name.split('.')[0] + '.xml', user=request.user.myuser,
+                                      group=request.user.myuser.group, xml=file)
+                    new_atxt.save()
+                    file.close()
+                    os.remove(path)
+            if dex >= key and dex < 1 and key!=1:
+                file_list.append(t.name)
+            if dex == 1 and key == 1:
                 file_list.append(t.name)
     return render(request, 'annotation/final_decide.html', {'file_list': file_list})
 

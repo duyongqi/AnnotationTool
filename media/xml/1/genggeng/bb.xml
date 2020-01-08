@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<Document ID="bb">
+	
+	
+	<event ID="1" TYPE="会见会谈">
+		
+		
+		<event_trigger END="28" ROLE="会见会谈" START="25">举行会谈</event_trigger>
+		
+		
+		<event_argument END="7" ROLE="参与方" START="1">国家主席习近平</event_argument>
+		
+		
+		<event_argument END="10" ROLE="时间" START="8">20日</event_argument>
+		
+		
+		<event_argument END="14" ROLE="地点" START="12">马尼拉</event_argument>
+		
+		
+		<event_argument END="24" ROLE="参与方" START="21">杜特尔特</event_argument>
+		
+	
+	</event>
+	
+
+</Document>

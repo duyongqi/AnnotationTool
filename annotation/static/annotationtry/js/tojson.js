@@ -13,7 +13,7 @@ create_json=function(){
           var temp_large={
                  "@START":tri[i].getAttribute("x"),
                  "@END":tri[i].getAttribute("y"),
-                 "@role":temp_tri_role,
+                 "@ROLE":temp_tri_role,
                  "#text":tri[i].firstChild.nodeValue
              };         
           for ( var j = 0; j < sp.length; j++) {
@@ -32,7 +32,7 @@ create_json=function(){
           }                 
           var one_event={
             "@ID":parseInt(temp_id),
-            "@Type":temp_tri_role,
+            "@TYPE":temp_tri_role,
             event_trigger:temp_large,
             event_argument:arr_argument
           };

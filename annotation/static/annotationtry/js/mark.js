@@ -68,8 +68,8 @@ var flag_te=flag;
               var z=(rang.startContainer).previousSibling.id;
               var last_len=z.length;
               var i=z.indexOf("_");
-              var last_start=Number(z.substring(0,i));
-              var last_end=Number(z.substring(i+1,last_len-i));
+              var last_start=Number(z.substr(0,i));
+              var last_end=Number(z.substr(i+1,last_len-i));
               x=last_end+x;
               y=x+len-1;
    
@@ -204,8 +204,8 @@ var flag_te=flag;
               var z=(rang.startContainer).previousSibling.id;
               var last_len=z.length;
               var i=z.indexOf("_");
-              var last_start=Number(z.substring(0,i));
-              var last_end=Number(z.substring(i+1,last_len-i));
+              var last_start=Number(z.substr(0,i));
+              var last_end=Number(z.substr(i+1,last_len-i));
               x=last_end+x;
               y=x+len-1;
    

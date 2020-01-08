@@ -75,7 +75,7 @@ $(function() {
     //排序，按事件块的先后,all_objects里面存的是几个事件。并且按照事件块的先后顺序排序
     var class_object = {
             "会见会谈" : {
-                "会谈":'custom-underline',
+                "会见会谈":'custom-underline',
                 "参与方":'people-purple',
                 "时间":'time-blue',
                 "地点":'location-green'
@@ -111,7 +111,7 @@ $(function() {
     var element_number = 0;
     var i = 0;
     //这个循环是对每一个事件的循环
-    alert(all_objects.length);
+    //alert(all_objects.length);
     for(var dex = 0;dex < all_objects.length;dex++){
 
         //这一部分是为了获取这一次循环对应的事件的属性，以便之后的属性设置
@@ -131,11 +131,11 @@ $(function() {
         console.log(event_this_time);
         //这个j表示的是当前事件的事件参数数组的第j个数组值，这个循环是对事件的参数循环
         for(var j = 0;j < event_this_time.length;j++){
-            if (i < Number(event_this_time[j]['@START'])){
+            if (i < Number(event_this_time[j]['@START']) - 1){
                 //创建文本节点
                 start_number =  Number(event_this_time[j]['@START']);
                 var para = document.createElement("span");
-                str_content = text_content.substring(i,start_number);
+                str_content = text_content.substring(i,start_number-1);
                 var node = document.createTextNode(str_content);
                 para.appendChild(node);
                 father_text.appendChild(para);
@@ -145,7 +145,7 @@ $(function() {
                 //创建当前事件参数节点
                 var para = document.createElement("span");
                 end_number = Number(event_this_time[j]['@END']);
-                str_content = text_content.substring(start_number,end_number+1);
+                str_content = text_content.substring(start_number-1,end_number);
                 var node = document.createTextNode(str_content);
                 para.appendChild(node);
                 para.setAttribute('element_number',element_number);
@@ -164,7 +164,7 @@ $(function() {
 
 
                 //挪动指针
-                i = end_number + 1;
+                i = end_number;
                 //alert(i);
             }
             else{
@@ -172,7 +172,7 @@ $(function() {
                 start_number =  Number(event_this_time[j]['@START']);
                 var para = document.createElement("span");
                 end_number = Number(event_this_time[j]['@END']);
-                str_content = text_content.substring(start_number,end_number+1);
+                str_content = text_content.substring(start_number-1,end_number);
                 var node = document.createTextNode(str_content);
                 para.appendChild(node);
                 para.setAttribute('element_number',element_number);
@@ -193,7 +193,7 @@ $(function() {
 
 
                 //挪动指针
-                i = end_number + 1;
+                i = end_number ;
                 //alert(i);
             }
         }
@@ -326,41 +326,53 @@ $(function() {
 <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/note.css' %}"/>
 {% endblock %}
 {% block content %}
-<div class="modal-header">
-    <button class="close" data-dismiss="modal">x</button>
-    <h3>Annotation</h3>
-    <h2 id="filename">{{file.name}}</h2>
-</div>
-<div class="modal-dialog">
-    <div  class="content">
-        <span id="ori"><span>{{file_content}}</span></span>
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-4 column">
+
+        <h2 id="filename">{{file.name}}</h2>
     </div>
-    <div>
-            <button type="button" class="btn btn-primary"
+    <div class="col-md-4 column">
+    </div>
+    <div class="col-md-4 column">
+    </div>
+
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-4 column">
+        <p><br/></p>
+        <div>
+            <button type="button" class="btn btn-danger btn-sm"
               onclick="mytrigger('custom-underline',(this.flag_te),'1')">会见会谈</button>
+        </div>
+        <div class="btn-group btn-group-sm">
             <button type="button" class="btn btn-primary"
               onclick="mymark('people-purple',this.flag_te,'1')">参与方</button>
             <button type="button" class="btn btn-primary"
               onclick="mymark('time-blue',this.flag_te,'1')">时间</button>
             <button type="button" class="btn btn-primary"
               onclick="mymark('location-green',this.flag_te,'1')">地点</button>
-    </div>
-    <div>
-        <button type="button" class="btn btn-primary"
+        </div><p><br/></p>
+<div>
+    <button type="button" class="btn btn-danger btn-sm"
           onclick="mytrigger('custom-underline',(this.flag_te),'2')">签署文件</button>
+</div>
+    <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary"
           onclick="mymark('people-purple',this.flag_te,'2')">签署方</button>
         <button type="button" class="btn btn-primary"
           onclick="mymark('thing-yellow',this.flag_te,'2')">文件</button>
         <button type="button" class="btn btn-primary"
-          onclick="mymark('time-blue',this.flag_te,'2')">时间</button>
+          onclick="mymark('time-blue',this.flag_te,'2')">签署时间</button>
         <button type="button" class="btn btn-primary"
           onclick="mymark('location-green',this.flag_te,'2')">签署地点</button>
 
-    </div>
+    </div><p><br/></p>
     <div>
-        <button type="button" class="btn btn-primary"
+        <button type="button" class="btn btn-danger btn-sm"
           onclick="mytrigger('custom-underline',(this.flag_te),'3')">设施启用</button>
+    </div>
+    <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary"
           onclick="mymark('people-purple',this.flag_te,'3')">设施修建方</button>
         <button type="button" class="btn btn-primary"
@@ -370,10 +382,12 @@ $(function() {
         <button type="button" class="btn btn-primary"
           onclick="mymark('location-green',this.flag_te,'3')">设施地点</button>
 
-    </div>
+    </div><p><br/></p>
     <div>
-        <button type="button" class="btn btn-primary"
-          onclick="mytrigger('custom-underline',(this.flag_te),'4')">签署文件</button>
+        <button type="button" class="btn btn-danger btn-sm"
+          onclick="mytrigger('custom-underline',(this.flag_te),'4')">举办活动</button>
+    </div>
+    <div class="btn-group btn-group-sm">
         <button type="button" class="btn btn-primary"
           onclick="mymark('people-purple',this.flag_te,'4')">举办方</button>
         <button type="button" class="btn btn-primary"
@@ -383,22 +397,32 @@ $(function() {
         <button type="button" class="btn btn-primary"
           onclick="mymark('location-green',this.flag_te,'4')">活动地点</button>
 
+    </div><p><br/></p>
     </div>
-    <div class="modal-footer">
-        <div>
-            <a href="{% url 'download' file.name %}">下载当前文本</a>
-            <a href="{% url 'xml_download' file.name %}">下载xml文本</a>
-        </div>
-        <div>
-        <button  class="btn btn-warning" id="submit">提交</button>
-        <button class="btn btn-warning" name="return">
+    <div class="col-md-5 column">
+        <div  class="content">
+            <span id="ori"><span>{{file_content}}</span></span> </div>
+         <div class="btn-group btn-group-sm">
+             <button type="submit" class="btn btn-warning">保存</button>
+
+        <button  class="btn btn-success" id="submit">提交</button>
+        <button class="btn btn-default" name="return">
             <a href="{% url 'choose_text' %}" class="link_button ">退出</a>
         </button>
-        </div>
+    </div><p><br/></p>
+        {% if user.myuser.limits == 1%}
+    <a class="myButton" href="{% url 'download' file.name %}">下载当前文本</a>
+    {% endif %}
+    <a class="myButton" href="{% url 'xml_download' file.name %}">下载xml文本</a>
+    {{message}}
+    </div>
+    <div class="col-md-3 column">
         <div>
-            <a href ="{% url 'leader_note1' file.name %}">另一个xml</a>
+            <a class="myButton" href="{% url 'leader_note1' file.name %}">另一个xml</a>
         </div>
     </div>
-        {{message}}
 </div>
+</div>
+
+
 {% endblock %}
