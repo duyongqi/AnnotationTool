@@ -131,7 +131,7 @@ $(function() {
         console.log(event_this_time);
         //这个j表示的是当前事件的事件参数数组的第j个数组值，这个循环是对事件的参数循环
         for(var j = 0;j < event_this_time.length;j++){
-            if (i < Number(event_this_time[j]['@START'])-1){
+            if (i < Number(event_this_time[j]['@START']) - 1){
                 //创建文本节点
                 start_number =  Number(event_this_time[j]['@START']);
                 var para = document.createElement("span");
@@ -164,7 +164,7 @@ $(function() {
 
 
                 //挪动指针
-                i = end_number ;
+                i = end_number;
                 //alert(i);
             }
             else{
@@ -326,6 +326,7 @@ $(function() {
 <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/note.css' %}"/>
 {% endblock %}
 {% block content %}
+
 <div class="container">
   <div class="row clearfix">
     <div class="col-md-4 column">
@@ -353,7 +354,7 @@ $(function() {
             <button type="button" class="btn btn-primary"
               onclick="mymark('location-green',this.flag_te,'1')">地点</button>
         </div><p><br/></p>
-<div>
+        <div>
     <button type="button" class="btn btn-danger btn-sm"
           onclick="mytrigger('custom-underline',(this.flag_te),'2')">签署文件</button>
 </div>
@@ -399,29 +400,35 @@ $(function() {
 
     </div><p><br/></p>
     </div>
-    <div class="col-md-5 column">
-        <div  class="content">
-            <span id="ori"><span>{{file_content}}</span></span> </div>
-         <div class="btn-group btn-group-sm">
-             <button type="submit" class="btn btn-warning">保存</button>
 
-        <button  class="btn btn-success" id="submit">提交</button>
+    <div class="col-md-5 column">
+        <div class="content" >
+            <span id="ori"><span>{{file_content}}</span> </span></div><p><br/></p><p><br/></p>
+        <div class="btn-group btn-group-sm">
+            <button  class="btn btn-success" id="submit">提交</button>
         <button class="btn btn-default" name="return">
             <a href="{% url 'choose_text' %}" class="link_button ">退出</a>
-        </button>
-    </div><p><br/></p>
+        </button></div>
+        <div>
+            <a href ="{% url 'leader_note' file.name %}">另一个xml</a>
+        </div><p><br/></p>
         {% if user.myuser.limits == 1%}
     <a class="myButton" href="{% url 'download' file.name %}">下载当前文本</a>
     {% endif %}
     <a class="myButton" href="{% url 'xml_download' file.name %}">下载xml文本</a>
     {{message}}
-    <div>
-        <a class="myButton" href="{% url 'leader_note' file.name %}">另一个xml</a>
+
+
+
     </div>
+      <div class="col-md-3 column">
+<!--        <p><h5><strong>必看</strong></h5>1.对于某事件<strong>触发词</strong>的标注必须<strong>先</strong>于该事件的任何一个事件元素，当开始标注下一个触发词的时候，-->
+<!--            默认上一个事件已标注完成。-->
+<!--        </p>-->
+<!--        <p>2.如需修改已标注的事件，请将该事件的触发词和所有的事件元素均删除，之后进行该事件的二次标注。</p>-->
     </div>
-    <div class="col-md-3 column">
 
     </div>
 </div>
-</div>
+
 {% endblock %}

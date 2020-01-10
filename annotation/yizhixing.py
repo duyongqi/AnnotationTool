@@ -22,32 +22,31 @@ def three_to_one(listlist, index1, index2=None):
     return one
 
 
-class parser():
-    def parser_xml(self, xml):
-        tree = ET.parse((MEDIA_ROOT + '/' + xml.name).replace('\\','/'))
-        #xml里存的是路径，xml.name是路径，不是名称
-        root = tree.getroot()
-        # 最终返回的数组
-        parse_string = []
-        # 遍历所有事件
-        for child in root:
-            # 用来存储每个事件
-            event = [child.attrib['TYPE']]
-            # 数组第一位是事件类型
-            for children in child:
-                position = [int(children.attrib['START']), int(children.attrib['END'])]
-                event.append(position)
-            # 将事件添加到数组里，所以最后生成的是一个所有事件组成的二位列表，列表中的每一个列表
-            # 中的第一个是事件类型，第二个是触发事件，后面的是所有的事件参数，除了第一个是字符串，其他的村的都是起始位置构成的数组，所以目前是个三维列表
-            parse_string.append(event)
-        return parse_string
+def parser_xml(xml):
+    tree = ET.parse((MEDIA_ROOT + '/' + xml.name).replace('\\','/'))
+    #xml里存的是路径，xml.name是路径，不是名称
+    root = tree.getroot()
+    # 最终返回的数组
+    parse_string = []
+    # 遍历所有事件
+    for child in root:
+        # 用来存储每个事件
+        event = [child.attrib['TYPE']]
+        # 数组第一位是事件类型
+        for children in child:
+            position = [int(children.attrib['START']), int(children.attrib['END'])]
+            event.append(position)
+        # 将事件添加到数组里，所以最后生成的是一个所有事件组成的二位列表，列表中的每一个列表
+        # 中的第一个是事件类型，第二个是触发事件，后面的是所有的事件参数，除了第一个是字符串，其他的村的都是起始位置构成的数组，所以目前是个三维列表
+        parse_string.append(event)
+    return parse_string
 
 
 # if __name__ == '__main__':
 #     p = parser()
 #     list = p.parser_xml('aa.xml')
 #     print(list)
-class ntree_parser(parser):
+class ntree_parser():
     # 判断一致性
     def same(self, path_list):
         if path_list == None:
@@ -59,9 +58,9 @@ class ntree_parser(parser):
         one_tree_length = []
         leng_input = len(path_list)
         for i in range(leng_input):
-            tree.append(parser().parser_xml(path_list[i]))
+            tree.append(parser_xml(path_list[i]))
             # print(len(tree[i]))
-        # print(tree)
+        print(tree)
 
         # 判断，如果大家标注的事件个数都不一样，一致性直接0
         for i in range(leng_input):

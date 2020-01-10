@@ -19,8 +19,19 @@ var flag_te=flag;
             var rang = selecter.getRangeAt(0);
             var ele = document.createElement("span");
             // var x=selecter.anchorOffset;
-            var x=selecter.anchorOffset+1;
+            var x=selecter.anchorOffset;
             var y=selecter.extentOffset;
+            if(x > y){
+                x = x;
+                y = y + 1;
+                var h = x;
+                x = y;
+                y = h;
+            }
+            else{
+                x = x + 1;
+                y = y;
+            }
             var len=y-x+1;
             ele.className=class_Name;
             ele.textContent = selectStr;
@@ -155,8 +166,19 @@ var flag_te=flag;
             var rang = selecter.getRangeAt(0);
             var ele = document.createElement("span");
             // var x=selecter.anchorOffset;
-            var x=selecter.anchorOffset+1;
+            var x=selecter.anchorOffset;
             var y=selecter.extentOffset;
+            if(x > y){
+                x = x;
+                y = y + 1;
+                var h = x;
+                x = y;
+                y = h;
+            }
+            else{
+                x = x + 1;
+                y = y;
+            }
             var len=y-x+1;
             ele.className=class_Name;
             ele.textContent = selectStr;

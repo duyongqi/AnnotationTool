@@ -290,13 +290,17 @@ class leader_note(View):
         file.close()
         os.remove(path)
         remove_text = text.objects.get(name=name,group=request.user.myuser.group)
-        # print(remove_text[0].limit)
-        # remove_text[0].limit = remove_text[0].limit - 1
-        # print(remove_text[0].limit)
-        # remove_text[0].save()
-        #filter数组的0，和get不一样
         remove_text.limit = 0
         remove_text.save()
+        xml_list = a_text.objects.filter(name=(name.split('.')[0] + '.xml'), group=request.user.myuser.group)
+        for i in xml_list:
+            with open((MEDIA_ROOT + '/' + i.xml.name).replace('\\', '/'),'r+',encoding='utf-8') as file_set:
+                file_set.truncate()
+                dom.encode('utf-8').decode('utf-8')
+                file_set.write(dom)
+                # file_set.decode('utf-8')
+                # print(dom)
+
         return HttpResponseRedirect(reverse('final_decide'))
 
 # def post(request):
@@ -384,6 +388,14 @@ class leader_note1(View):
         #filter数组的0，和get不一样
         remove_text.limit = 0
         remove_text.save()
+        xml_list = a_text.objects.filter(name=(name.split('.')[0] + '.xml'), group=request.user.myuser.group)
+        for i in xml_list:
+            with open((MEDIA_ROOT + '/' + i.xml.name).replace('\\', '/'),'r+',encoding='utf-8') as file_set:
+                # print((MEDIA_ROOT + '/' + i.xml.name).replace('\\', '/'))
+                file_set.truncate()
+                file_set.write(dom)
+                # print(dom)
+
         return HttpResponseRedirect(reverse('final_decide'))
 
 
@@ -461,6 +473,7 @@ def final_decide(request):
                     new_atxt.save()
                     file.close()
                     os.remove(path)
+
             if dex >= key and dex < 1 and key!=1:
                 file_list.append(t.name)
             if dex == 1 and key == 1:

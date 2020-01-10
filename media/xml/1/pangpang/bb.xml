@@ -2,22 +2,16 @@
 <Document ID="bb">
 	
 	
-	<event ID="1" TYPE="╩А╪Ш╩Ал╦">
+	<event ID="1" TYPE="Д╪ Х╖│Д╪ Х╟┬">
 		
 		
-		<event_trigger END="28" ROLE="╩А╪Ш╩Ал╦" START="25">╬ыпп╩Ал╦</event_trigger>
+		<event_trigger END="28" ROLE="Д╪ Х╖│Д╪ Х╟┬" START="25">Д╦╬Х║▄Д╪ Х╟┬</event_trigger>
 		
 		
-		<event_argument END="7" ROLE="╡нсК╥╫" START="1">╧З╪ржВо╞о╟╫Эф╫</event_argument>
+		<event_argument END="7" ROLE="Е▐┌Д╦▌Ф√╧" START="1">Е⌡╫Е╝╤Д╦╩Е╦╜Д╧═Х©▒Е╧Ё</event_argument>
 		
 		
-		<event_argument END="10" ROLE="й╠╪Д" START="8">20ху</event_argument>
-		
-		
-		<event_argument END="14" ROLE="╣ь╣Ц" START="12">бМдАю╜</event_argument>
-		
-		
-		<event_argument END="24" ROLE="╡нсК╥╫" START="21">╤ель╤Шль</event_argument>
+		<event_argument END="19" ROLE="Ф≈╤И≈╢" START="16">Х▐╡Е╬▀Е╝╬Ф─╩</event_argument>
 		
 	
 	</event>

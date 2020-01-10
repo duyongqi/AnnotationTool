@@ -118,11 +118,11 @@ $(function() {
         var type = all_objects[dex]['type'];
         //alert(type);
         //所有事件类型对应的类名称
-        //var type_class = ['会见会谈','签署文件','设施启用','举行活动'];
+        var type_class = ['会见会谈','签署文件','设施启用','举行活动'];
         //所有的事件类颜色
-        //var css_class = ['css1','css2','css3','css4'];
-        //var index = type_class.indexOf(type);
-        //var css_type = css_class[index];
+        var css_class = [1,2,3,4];
+        var index = type_class.indexOf(type);
+        var event_idd = css_class[index];
         //alert(css_type);
         //这里是根据type的类型找出type对用的样式，以便在创建节点时的属性的设置
 
@@ -152,7 +152,7 @@ $(function() {
                 class_set = class_object[type][event_this_time[j]['@ROLE']];
                 para.className = class_set;
                 para.id = event_this_time[j]['@START'] +'_' + event_this_time[j]['@END'];
-                para.setAttribute('event_id',element_number);
+                para.setAttribute('event_id',Number(event_idd));
                 para.setAttribute('x',event_this_time[j]['@START']);
                 para.setAttribute('y',event_this_time[j]['@END']);
                 var bt =document.createElement("button");           //createElement生成button对象
@@ -179,7 +179,7 @@ $(function() {
                 class_set = class_object[type][event_this_time[j]['@ROLE']];
                 para.className = class_set;
                 para.id = event_this_time[j]['@START'] +'_' + event_this_time[j]['@END'];
-                para.setAttribute('event_id',element_number);
+                para.setAttribute('event_id',Number(event_idd));
                 para.setAttribute('x',event_this_time[j]['@START']);
                 para.setAttribute('y',event_this_time[j]['@END']);
 
@@ -325,8 +325,7 @@ $(function() {
 {% block css %}
 <link rel="stylesheet" type="text/css" href="{% static 'annotationtry/css/note.css' %}"/>
 {% endblock %}
-{% block content %}
-<div class="container">
+{% block content %}<div class="container">
   <div class="row clearfix">
     <div class="col-md-4 column">
 
@@ -353,7 +352,7 @@ $(function() {
             <button type="button" class="btn btn-primary"
               onclick="mymark('location-green',this.flag_te,'1')">地点</button>
         </div><p><br/></p>
-<div>
+        <div>
     <button type="button" class="btn btn-danger btn-sm"
           onclick="mytrigger('custom-underline',(this.flag_te),'2')">签署文件</button>
 </div>
@@ -399,29 +398,35 @@ $(function() {
 
     </div><p><br/></p>
     </div>
-    <div class="col-md-5 column">
-        <div  class="content">
-            <span id="ori"><span>{{file_content}}</span></span> </div>
-         <div class="btn-group btn-group-sm">
-             <button type="submit" class="btn btn-warning">保存</button>
 
-        <button  class="btn btn-success" id="submit">提交</button>
+    <div class="col-md-5 column">
+        <div class="content" >
+            <span id="ori"><span>{{file_content}}</span></span> </div><p><br/></p><p><br/></p>
+        <div class="btn-group btn-group-sm">
+            <button  class="btn btn-success" id="submit">提交</button>
         <button class="btn btn-default" name="return">
             <a href="{% url 'choose_text' %}" class="link_button ">退出</a>
-        </button>
-    </div><p><br/></p>
+        </button></div>
+        <div>
+            <a href ="{% url 'leader_note1' file.name %}">另一个xml</a>
+        </div><p><br/></p>
         {% if user.myuser.limits == 1%}
     <a class="myButton" href="{% url 'download' file.name %}">下载当前文本</a>
     {% endif %}
     <a class="myButton" href="{% url 'xml_download' file.name %}">下载xml文本</a>
     {{message}}
+
+
+
     </div>
-    <div class="col-md-3 column">
-        <div>
-            <a class="myButton" href="{% url 'leader_note1' file.name %}">另一个xml</a>
-        </div>
+      <div class="col-md-3 column">
+<!--        <p><h5><strong>必看</strong></h5>1.对于某事件<strong>触发词</strong>的标注必须<strong>先</strong>于该事件的任何一个事件元素，当开始标注下一个触发词的时候，-->
+<!--            默认上一个事件已标注完成。-->
+<!--        </p>-->
+<!--        <p>2.如需修改已标注的事件，请将该事件的触发词和所有的事件元素均删除，之后进行该事件的二次标注。</p>-->
     </div>
-</div>
+
+    </div>
 </div>
 
 
