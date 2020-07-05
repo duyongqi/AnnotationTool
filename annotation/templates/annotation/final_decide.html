@@ -51,13 +51,21 @@
     <h3>Text to decide</h3>
 </div>
 <div class="modal-dialog">
+
     <div class="modal-content">
+        <h3>
+             请在此输入一致性阈值，将会显示本组一致性大于此值的列表
+        </h3>
+    </div>
+    </br>
+    <div class="modal-content">
+        </br>
         <ol type="1">
         <div>
             <form method="post">
                 {% csrf_token %}
             <input type="number" name="key" step="0.01" max="1.0" min="0.0"/>
-            <button type="submit">确定</button>
+            <button type="submit" class="btn btn-warning btn-sm" >确定</button>
             </form>
         </div>
 {% for name in file_list %}

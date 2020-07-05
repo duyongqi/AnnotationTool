@@ -21,32 +21,32 @@ def three_to_one(listlist, index1, index2=None):
     one.sort()
     return one
 
-
-def parser_xml(xml):
-    tree = ET.parse((MEDIA_ROOT + '/' + xml.name).replace('\\','/'))
-    #xml里存的是路径，xml.name是路径，不是名称
-    root = tree.getroot()
-    # 最终返回的数组
-    parse_string = []
-    # 遍历所有事件
-    for child in root:
-        # 用来存储每个事件
-        event = [child.attrib['TYPE']]
-        # 数组第一位是事件类型
-        for children in child:
-            position = [int(children.attrib['START']), int(children.attrib['END'])]
-            event.append(position)
-        # 将事件添加到数组里，所以最后生成的是一个所有事件组成的二位列表，列表中的每一个列表
-        # 中的第一个是事件类型，第二个是触发事件，后面的是所有的事件参数，除了第一个是字符串，其他的村的都是起始位置构成的数组，所以目前是个三维列表
-        parse_string.append(event)
-    return parse_string
+class parser():
+    def parser_xml(self,xml):
+        tree = ET.parse((MEDIA_ROOT + '/' + xml.name).replace('\\', '/'))
+        #xml里存的是路径，xml.name是路径，不是名称
+        root = tree.getroot()
+        # 最终返回的数组
+        parse_string = []
+        # 遍历所有事件
+        for child in root:
+            # 用来存储每个事件
+            event = [child.attrib['TYPE']]
+            # 数组第一位是事件类型
+            for children in child:
+                position = [int(children.attrib['START']), int(children.attrib['END'])]
+                event.append(position)
+            # 将事件添加到数组里，所以最后生成的是一个所有事件组成的二位列表，列表中的每一个列表
+            # 中的第一个是事件类型，第二个是触发事件，后面的是所有的事件参数，除了第一个是字符串，其他的村的都是起始位置构成的数组，所以目前是个三维列表
+            parse_string.append(event)
+        return parse_string
 
 
 # if __name__ == '__main__':
 #     p = parser()
 #     list = p.parser_xml('aa.xml')
 #     print(list)
-class ntree_parser():
+class ntree_parser(parser):
     # 判断一致性
     def same(self, path_list):
         if path_list == None:
@@ -58,15 +58,17 @@ class ntree_parser():
         one_tree_length = []
         leng_input = len(path_list)
         for i in range(leng_input):
-            tree.append(parser_xml(path_list[i]))
-            # print(len(tree[i]))
-        print(tree)
+            tree.append(parser().parser_xml(path_list[i]))
+        # print(tree)
+
 
         # 判断，如果大家标注的事件个数都不一样，一致性直接0
         for i in range(leng_input):
             one_tree_length.append(len(tree[i]))
+
         one_tree_length.sort()
-        if one_tree_length[0] != one_tree_length[leng_input - 1]:
+        print(one_tree_length)
+        if (one_tree_length[1] != one_tree_length[-1]):
             dex = 0
             return dex
 
@@ -75,14 +77,14 @@ class ntree_parser():
             # 如果事件不一致，一致性也为0
             type = three_to_one(tree, i, 0)
             # print(type)
-            if type[0] != type[leng_input - 1]:
+            if type[0] != type[-1]:
                 dex = 0
                 return dex
 
             # 如果事件参数个数不一致，一致性同样为0
             number_of_argument = three_to_one(tree, i)
             # print(number_of_argument)
-            if number_of_argument[0] != number_of_argument[leng_input - 1]:
+            if number_of_argument[0] != number_of_argument[-1]:
                 dex = 0
                 return dex
 
@@ -95,14 +97,14 @@ class ntree_parser():
                 # 这里我还没决定要不要丢掉奇异的
                 # print(argument)
                 left_min = int(argument[0][0])
-                left_max = int(argument[leng_input - 1][0])
+                left_max = int(argument[-1][0])
                 # print(left_min, left_max, 'left')
                 # 翻转的目的是方便以END值为key排序（说法不严谨，意思是这样）
                 for a in argument:
                     a.reverse()
                 argument.sort()
                 right_min = int(argument[0][0])
-                right_max = int(argument[leng_input - 1][0])
+                right_max = int(argument[-1][0])
                 # print(right_min, right_max, 'right')
                 if right_min < left_max:
                     dex_argument = dex_argument + 0
@@ -116,7 +118,10 @@ class ntree_parser():
             # print(dex_argument)
             dex = dex + dex_argument
             # print(dex)
-        dex = dex / one_tree_length[0]
+        if one_tree_length[0] ==0 :
+            dex=0
+        else:
+            dex = dex / one_tree_length[0]
         return dex
 # if __name__ == '__main__':
 

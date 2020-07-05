@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<Document ID="zzz.txt.txt">
+	
+	
+	<event ID="1" TYPE="会见会谈">
+		
+		
+		<event_trigger END="10" ROLE="会见会谈" START="10">哈</event_trigger>
+		
+		
+		<event_argument END="2" ROLE="参与方" START="1">哈哈</event_argument>
+		
+		
+		<event_argument END="4" ROLE="时间" START="4">哈</event_argument>
+		
+		
+		<event_argument END="7" ROLE="地点" START="6">哈哈</event_argument>
+		
+	
+	</event>
+	
+
+</Document>

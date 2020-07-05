@@ -1,3 +1,17 @@
 <?xml version="1.0" ?>
 <Document ID="t001.txt">
+	
+	
+	<event ID="1" TYPE="会见会谈">
+		
+		
+		<event_trigger END="6" ROLE="会见会谈" START="5">测试</event_trigger>
+		
+		
+		<event_argument END="1" ROLE="参与方" START="1">这</event_argument>
+		
+	
+	</event>
+	
+
 </Document>
