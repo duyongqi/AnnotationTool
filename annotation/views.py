@@ -1,17 +1,5 @@
-<<<<<<< HEAD
-import json
-import os
 from functools import wraps
-from xml.dom.minidom import parseString
 
-import xmltodict
-=======
-from typing import TextIO
-
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
-from django.contrib.auth.models import User
->>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
 from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -27,26 +15,13 @@ from AnnotationTool.settings import MEDIA_ROOT
 from .form import UploadFile
 from .models import myUser, a_text, group, text
 from .yizhixing import ntree_parser
-<<<<<<< HEAD
 
-
-=======
 import json
 import os
-import sys
-import dicttoxml
 import xmltodict
-from xmltodict import _DictSAXHandler
 from xml.dom.minidom import parseString
-from django.views import View
-import xml.etree.ElementTree as ET
-from django.utils.decorators import method_decorator
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
->>>>>>> c48193b9dd75882822ce172f7a3f3a925ad96d47
 # Create your views here.
 # 装饰器，只有组长有权限
 def leader_required(function):
@@ -181,11 +156,8 @@ def note(request, name, args=''):
         # request.body.replace(b'JJ', b'@')
         jsondict = json.loads(request.body, encoding='utf-8')
         xml = xmltodict.unparse(jsondict, pretty=True)
-<<<<<<< HEAD
         # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')
         # )  # dict转xml xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
-=======
-<<<<<<< HEAD
         # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')
         # )  # dict转xml xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
         dom1 = parseString(xml)
@@ -196,28 +168,22 @@ def note(request, name, args=''):
                                              user=request.user.myuser, group=request.user.myuser.group)
         if a_text_init1:
             a_text_init = a_text_init1[0]
-=======
-        # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  )  # dict转xml
-        # xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
->>>>>>> c48193b9dd75882822ce172f7a3f3a925ad96d47
+        # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')
+        # )  # dict转xml xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
         dom1 = parseString(xml)
         # 转化成空行缩进比较合适的形式
         dom = dom1.toprettyxml()
         # print(dom)
-<<<<<<< HEAD
         a_text_init1 = a_text.objects.filter(name=name.split('.')[0] + '.xml',
                                              user=request.user.myuser, group=request.user.myuser.group)
         if a_text_init1:
             a_text_init = a_text_init1[0]
-=======
         try:
             a_text_init = a_text.objects.get(name=name.split('.')[0] + '.xml',
-                                             user=request.user.myuser,group=request.user.myuser.group)
+                                             user=request.user.myuser, group=request.user.myuser.group)
         except:
             a_text_init = None
         if a_text_init:
->>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
->>>>>>> c48193b9dd75882822ce172f7a3f3a925ad96d47
             with open((MEDIA_ROOT + '/' + a_text_init.xml.name).replace('\\', '/'), 'r+', encoding='utf-8') as file:
                 file.truncate()
                 file.write(dom)
@@ -246,21 +212,15 @@ def note(request, name, args=''):
                        name.split('.')[0] + '.xml').replace('\\', '/'))
                 final_file.truncate()
                 final_file.write(dom)
-<<<<<<< HEAD
             # 如果从前没有标注过就让文本index加一
             text_init = text.objects.get(name=name, group=request.user.myuser.group)
             text_init.index += 1
-=======
-<<<<<<< HEAD
             # 如果从前没有标注过就让文本index加一
             text_init = text.objects.get(name=name, group=request.user.myuser.group)
             text_init.index += 1
-=======
-            #如果从前没有标注过就让文本index加一
-            text_init = text.objects.get(name=name,group=request.user.myuser.group)
-            text_init.index +=1
->>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
->>>>>>> c48193b9dd75882822ce172f7a3f3a925ad96d47
+            # 如果从前没有标注过就让文本index加一
+            text_init = text.objects.get(name=name, group=request.user.myuser.group)
+            text_init.index += 1
             text_init.save()
         return HttpResponseRedirect(reverse('choose_text'))
 
@@ -278,14 +238,7 @@ def note(request, name, args=''):
     }
     return render(request, 'annotation/note.html', content)
 
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
->>>>>>> c48193b9dd75882822ce172f7a3f3a925ad96d47
 class leader_note(View):
 
     @method_decorator(login_required)
@@ -477,14 +430,7 @@ class leader_note1(View):
 
         return HttpResponseRedirect(reverse('final_decide'))
 
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
->>>>>>> c48193b9dd75882822ce172f7a3f3a925ad96d47
 # 组长上传界面
 @leader_required
 @login_required(login_url='/annotation/login/')
