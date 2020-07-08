@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import json
 import os
 from functools import wraps
 from xml.dom.minidom import parseString
 
 import xmltodict
+=======
+from typing import TextIO
+
+from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse, JsonResponse
+from django.contrib.auth.models import User
+>>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
 from django.contrib import auth
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -19,8 +27,21 @@ from AnnotationTool.settings import MEDIA_ROOT
 from .form import UploadFile
 from .models import myUser, a_text, group, text
 from .yizhixing import ntree_parser
+<<<<<<< HEAD
 
 
+=======
+import json
+import os
+import sys
+import dicttoxml
+import xmltodict
+from xmltodict import _DictSAXHandler
+from xml.dom.minidom import parseString
+from django.views import View
+import xml.etree.ElementTree as ET
+from django.utils.decorators import method_decorator
+>>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
 # Create your views here.
 # 装饰器，只有组长有权限
 def leader_required(function):
@@ -33,7 +54,6 @@ def leader_required(function):
 
     return wrapfunction
 
-
 @login_required(login_url='/annotation/login/')
 @leader_required
 def download(request, name):
@@ -45,7 +65,6 @@ def download(request, name):
     return FileResponse(open((MEDIA_ROOT + '/' + filepath).replace("\\", "/"), 'rb'), as_attachment=True, filename=name,
                         content_type='application/octet-stream')
     # 返回文件到浏览器
-
 
 @login_required(login_url='/annotation/login/')
 def xml_download(request, name):
@@ -69,7 +88,6 @@ def xml_download(request, name):
     # 重定向无法实现，这个方法好像行不通，下载xml不能跳转路由
     # 已经解决，直接调用note 函数再传个参数
 
-
 # 登录
 def login(request):
     if request.method == 'POST':
@@ -86,7 +104,6 @@ def login(request):
             }
             return render(request, 'annotation/login.html', content)
     return render(request, 'annotation/login.html')
-
 
 def register(request):
     group_list = group.objects.all()
@@ -131,7 +148,6 @@ def register(request):
     # 向html传递参数
     return render(request, 'annotation/register.html', content)
 
-
 # 用户以及用户组长文本选择（暂定为同一个界面）
 @login_required(login_url='/annotation/login/')
 def choose_text(request):
@@ -142,7 +158,6 @@ def choose_text(request):
         'text_list': text_list,
     }
     return render(request, 'annotation/choose_text.html', content)
-
 
 # 用户标注界面
 @login_required(login_url='/annotation/login/')
@@ -155,6 +170,7 @@ def note(request, name, args=''):
         # request.body.replace(b'JJ', b'@')
         jsondict = json.loads(request.body, encoding='utf-8')
         xml = xmltodict.unparse(jsondict, pretty=True)
+<<<<<<< HEAD
         # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')
         # )  # dict转xml xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
         dom1 = parseString(xml)
@@ -165,6 +181,20 @@ def note(request, name, args=''):
                                              user=request.user.myuser, group=request.user.myuser.group)
         if a_text_init1:
             a_text_init = a_text_init1[0]
+=======
+        # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  )  # dict转xml
+        # xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
+        dom1 = parseString(xml)
+        #转化成空行缩进比较合适的形式
+        dom = dom1.toprettyxml()
+        # print(dom)
+        try:
+            a_text_init = a_text.objects.get(name=name.split('.')[0] + '.xml',
+                                             user=request.user.myuser,group=request.user.myuser.group)
+        except:
+            a_text_init = None
+        if a_text_init:
+>>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
             with open((MEDIA_ROOT + '/' + a_text_init.xml.name).replace('\\', '/'), 'r+', encoding='utf-8') as file:
                 file.truncate()
                 file.write(dom)
@@ -173,11 +203,11 @@ def note(request, name, args=''):
             # print(path)
             # 以写的形式打开，如果不存在会新建，但是以独写的形式打开如果不存在不会新建，
             # 所以先以写的形式打开，然后写，然后关闭，然后以独写的形式打开，就可以对文本进行读取了
-            f = open(path, 'w', encoding='utf-8')
+            f = open(path, 'w',encoding='utf-8')
             f.write(dom)
             # print(f.read())
             f.close()
-            file_init = open(path, 'r+', encoding='utf-8')
+            file_init = open(path, 'r+',encoding='utf-8')
             file = File(file_init, name=name.split('.')[0] + '.xml')
             new_atxt = a_text(name=name.split('.')[0] + '.xml', user=request.user.myuser,
                               group=request.user.myuser.group, xml=file)
@@ -193,9 +223,15 @@ def note(request, name, args=''):
                        name.split('.')[0] + '.xml').replace('\\', '/'))
                 final_file.truncate()
                 final_file.write(dom)
+<<<<<<< HEAD
             # 如果从前没有标注过就让文本index加一
             text_init = text.objects.get(name=name, group=request.user.myuser.group)
             text_init.index += 1
+=======
+            #如果从前没有标注过就让文本index加一
+            text_init = text.objects.get(name=name,group=request.user.myuser.group)
+            text_init.index +=1
+>>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
             text_init.save()
         return HttpResponseRedirect(reverse('choose_text'))
 
@@ -213,7 +249,10 @@ def note(request, name, args=''):
     }
     return render(request, 'annotation/note.html', content)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
 class leader_note(View):
 
     @method_decorator(login_required)
@@ -405,7 +444,10 @@ class leader_note1(View):
 
         return HttpResponseRedirect(reverse('final_decide'))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 064154b007794b7d98d2cb7e82f07fb5091a337a
 # 组长上传界面
 @leader_required
 @login_required(login_url='/annotation/login/')
@@ -437,7 +479,6 @@ def upload(request):
             return render(request, 'annotation/upload.html', {'form': form, 'message': message})
     form = UploadFile()
     return render(request, 'annotation/upload.html', {'form': form})
-
 
 # 组长最终决定标注界面
 @leader_required
@@ -488,7 +529,6 @@ def final_decide(request):
             if dex == 1 and key == 1:
                 file_list.append(t.name)
     return render(request, 'annotation/final_decide.html', {'file_list': file_list})
-
 
 @login_required(login_url='/annotation/login/')
 def logout_view(request):
