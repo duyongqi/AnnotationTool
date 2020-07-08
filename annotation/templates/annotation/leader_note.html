@@ -124,6 +124,7 @@ $(function() {
         var index = type_class.indexOf(type);
         var event_idd = css_class[index];
         //alert(css_type);
+        //alert(event_idd);
         //这里是根据type的类型找出type对用的样式，以便在创建节点时的属性的设置
 
         //这个是当前的事件参数的数组
@@ -149,10 +150,12 @@ $(function() {
                 var node = document.createTextNode(str_content);
                 para.appendChild(node);
                 para.setAttribute('element_number',element_number);
+                //alert(type);
                 class_set = class_object[type][event_this_time[j]['@ROLE']];
+                //alert(class_set);
                 para.className = class_set;
                 para.id = event_this_time[j]['@START'] +'_' + event_this_time[j]['@END'];
-                para.setAttribute('event_id',Number(event_idd));
+                para.setAttribute('event_id',event_idd);
                 para.setAttribute('x',event_this_time[j]['@START']);
                 para.setAttribute('y',event_this_time[j]['@END']);
                 var bt =document.createElement("button");           //createElement生成button对象
@@ -179,7 +182,7 @@ $(function() {
                 class_set = class_object[type][event_this_time[j]['@ROLE']];
                 para.className = class_set;
                 para.id = event_this_time[j]['@START'] +'_' + event_this_time[j]['@END'];
-                para.setAttribute('event_id',Number(event_idd));
+                para.setAttribute('event_id',event_idd);
                 para.setAttribute('x',event_this_time[j]['@START']);
                 para.setAttribute('y',event_this_time[j]['@END']);
 
@@ -410,9 +413,7 @@ $(function() {
         <div>
             <a href ="{% url 'leader_note1' file.name %}">另一个xml</a>
         </div><p><br/></p>
-        {% if user.myuser.limits == 1%}
     <a class="myButton" href="{% url 'download' file.name %}">下载当前文本</a>
-    {% endif %}
     <a class="myButton" href="{% url 'xml_download' file.name %}">下载xml文本</a>
     {{message}}
 

@@ -5,7 +5,6 @@ urlpatterns = [
     path('', views.login, name='homepage'),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
-    # path('set_password', views.set_password,name='set_password'),
     path('choose_text/',views.choose_text,name='choose_text'),
     path('note/<name>/',views.note, name='note'),
     path('leader_note/<name>/', views.leader_note.as_view(), name='leader_note'),

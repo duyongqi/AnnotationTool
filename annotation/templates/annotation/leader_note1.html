@@ -118,12 +118,13 @@ $(function() {
         var type = all_objects[dex]['type'];
         //alert(type);
         //所有事件类型对应的类名称
-        //var type_class = ['会见会谈','签署文件','设施启用','举行活动'];
+        var type_class = ['会见会谈','签署文件','设施启用','举行活动'];
         //所有的事件类颜色
-        //var css_class = ['css1','css2','css3','css4'];
-        //var index = type_class.indexOf(type);
-        //var css_type = css_class[index];
+        var css_class = [1,2,3,4];
+        var index = type_class.indexOf(type);
+        var event_idd = css_class[index];
         //alert(css_type);
+        //alert(event_idd);
         //这里是根据type的类型找出type对用的样式，以便在创建节点时的属性的设置
 
         //这个是当前的事件参数的数组
@@ -152,7 +153,7 @@ $(function() {
                 class_set = class_object[type][event_this_time[j]['@ROLE']];
                 para.className = class_set;
                 para.id = event_this_time[j]['@START'] +'_' + event_this_time[j]['@END'];
-                para.setAttribute('event_id',element_number);
+                para.setAttribute('event_id',event_idd);
                 para.setAttribute('x',event_this_time[j]['@START']);
                 para.setAttribute('y',event_this_time[j]['@END']);
                 var bt =document.createElement("button");           //createElement生成button对象
@@ -179,7 +180,7 @@ $(function() {
                 class_set = class_object[type][event_this_time[j]['@ROLE']];
                 para.className = class_set;
                 para.id = event_this_time[j]['@START'] +'_' + event_this_time[j]['@END'];
-                para.setAttribute('event_id',element_number);
+                para.setAttribute('event_id',event_idd);
                 para.setAttribute('x',event_this_time[j]['@START']);
                 para.setAttribute('y',event_this_time[j]['@END']);
 
@@ -320,6 +321,7 @@ $(function() {
         $.post('', json_str);
         });
 })
+
 </script>
 {% endblock %}
 {% block css %}
@@ -412,9 +414,7 @@ $(function() {
         <div>
             <a href ="{% url 'leader_note' file.name %}">另一个xml</a>
         </div><p><br/></p>
-        {% if user.myuser.limits == 1%}
     <a class="myButton" href="{% url 'download' file.name %}">下载当前文本</a>
-    {% endif %}
     <a class="myButton" href="{% url 'xml_download' file.name %}">下载xml文本</a>
     {{message}}
 
