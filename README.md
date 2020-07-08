@@ -8,12 +8,12 @@
 
 3. python运行虚拟环境：请安装conda之后，命令行cd切换到项目文件根目录，然后执行：
 (annotation.yml文件在项目根目录下，请确保执行命令时你的系统可以找到这个文件路径）
-conda env create -f annotation.yml
+conda env create -f annotation.yml              
 conda activate ruanjiankeshe
 这样可以激活python虚拟环境
 
 3. 在激活python虚拟环境后，仍然在这个目录下，在命令行执行：
-py manage.py makemigrations
+py manage.py makemigrations           
 py manage.py migrate
 
 ********执行了23两步，至此完成数据库的映射和迁移
