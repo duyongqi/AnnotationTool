@@ -164,10 +164,10 @@ def note(request, name, args=''):
         # 转化成空行缩进比较合适的形式
         dom = dom1.toprettyxml()
         # print(dom)
-        a_text_init1 = a_text.objects.filter(name=name.split('.')[0] + '.xml',
-                                             user=request.user.myuser, group=request.user.myuser.group)
-        if a_text_init1:
-            a_text_init = a_text_init1[0]
+        # a_text_init1 = a_text.objects.filter(name=name.split('.')[0] + '.xml',
+        #                                      user=request.user.myuser, group=request.user.myuser.group)
+        # if a_text_init1:
+        #     a_text_init = a_text_init1[0]
         # xml = xmltodict.unparse(jsondict, pretty=True,encoding='utf-8')
         # )  # dict转xml xml = dicttoxml.dicttoxml(jsondict, root=False,attr_type=False)
         dom1 = parseString(xml)
@@ -178,12 +178,6 @@ def note(request, name, args=''):
                                              user=request.user.myuser, group=request.user.myuser.group)
         if a_text_init1:
             a_text_init = a_text_init1[0]
-        try:
-            a_text_init = a_text.objects.get(name=name.split('.')[0] + '.xml',
-                                             user=request.user.myuser, group=request.user.myuser.group)
-        except:
-            a_text_init = None
-        if a_text_init:
             with open((MEDIA_ROOT + '/' + a_text_init.xml.name).replace('\\', '/'), 'r+', encoding='utf-8') as file:
                 file.truncate()
                 file.write(dom)
@@ -212,12 +206,6 @@ def note(request, name, args=''):
                        name.split('.')[0] + '.xml').replace('\\', '/'))
                 final_file.truncate()
                 final_file.write(dom)
-            # 如果从前没有标注过就让文本index加一
-            text_init = text.objects.get(name=name, group=request.user.myuser.group)
-            text_init.index += 1
-            # 如果从前没有标注过就让文本index加一
-            text_init = text.objects.get(name=name, group=request.user.myuser.group)
-            text_init.index += 1
             # 如果从前没有标注过就让文本index加一
             text_init = text.objects.get(name=name, group=request.user.myuser.group)
             text_init.index += 1
@@ -476,6 +464,8 @@ def final_decide(request):
     txt_list = text.objects.filter(group=request.user.myuser.group)
     file_list = []
     for t in txt_list:
+        print(t.index)
+        print(request.user.myuser.group.member_number)
         if t.index == (request.user.myuser.group.member_number - 1):
             xml_list = a_text.objects.filter(name=(t.name.split('.')[0] + '.xml'), group=request.user.myuser.group)
             xml_path = []
